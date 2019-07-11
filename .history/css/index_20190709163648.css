@@ -1,0 +1,36 @@
+html,body,div#app{
+    height: 100%;
+}
+body{
+    font-size: calc(100vw / 19.2);
+}
+*{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    box-sizing: border-box;
+    line-height: 1rem;
+    color: #000000;
+}
+header.title-bar {
+    background: #F2F5F6;
+    height: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+p.title {
+    font-size: 2rem;
+}
+.right-part-show {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+img.setting-icon {
+    width: 2rem;
+}
+p.show-current-time {
+    font-size: 1rem;
+    margin-left: 1rem;
+}
