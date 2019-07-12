@@ -104,6 +104,8 @@
                         已接单</li>
                 </ul>
                 <div class="order-list-wrapper">
+                    <!-- 倒三角 -->
+                    <div class="triangle"></div>
                     <ul v-show="onlineCurrentIndex == 0" class="accept-wrapper">
                         <li @click="getOrderDetail(0,n)" v-for="n in 20" class="order-item pointer"
                             :class="{active:currentOrder == n && onlineCurrentIndex == 0}">
@@ -129,8 +131,6 @@
                 </div>
             </div>
             <div class="order-detail-wrapper">
-                <!-- 倒三角 -->
-                <div class="triangle"></div>
                 <div class="user-info">
                     <div class="user-address info-part">
                         <img src="./images/location.png" class="location">
@@ -172,7 +172,7 @@
                             <i class="money-icon blue">￥</i>
                             <i class="money-number blue">18</i>
                         </span>
-                        <button class="print-action pointer">打印小票</button>
+                        <button class="print-action">打印小票</button>
                     </div>
                 </div>
             </div>

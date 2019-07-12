@@ -4,8 +4,7 @@ new Vue({
         currentTime: '0000-00-00 00:00:00',
         currentIndex:1,
         subCurrentIndex:0,
-        onlineCurrentIndex:0,
-        currentOrder:1
+        onlineCurrentIndex:0
     },
     methods: {
         getCurrentTime: function () {
@@ -31,12 +30,6 @@ new Vue({
         switchOnlineTab:function(index) {
             if(this.onlineCurrentIndex != index) {
                 this.onlineCurrentIndex = index;
-            }
-        },
-        getOrderDetail:function(onlineCurrentIndex,currentOrder) {
-            if(this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
-                this.onlineCurrentIndex = onlineCurrentIndex;
-                this.currentOrder = currentOrder;
             }
         }
     },

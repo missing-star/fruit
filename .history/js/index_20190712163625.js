@@ -32,12 +32,6 @@ new Vue({
             if(this.onlineCurrentIndex != index) {
                 this.onlineCurrentIndex = index;
             }
-        },
-        getOrderDetail:function(onlineCurrentIndex,currentOrder) {
-            if(this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
-                this.onlineCurrentIndex = onlineCurrentIndex;
-                this.currentOrder = currentOrder;
-            }
         }
     },
     created: function () {

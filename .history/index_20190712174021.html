@@ -96,6 +96,8 @@
         </div>
         <!-- 线上订单 -->
         <div v-show="currentIndex == 1" class="main-content">
+            <!-- 倒三角 -->
+            <div class="triangle"></div>
             <div class="operation-wrapper">
                 <ul class="tab-wrapper">
                     <li @click="switchOnlineTab(0)" :class="{active:onlineCurrentIndex == 0}" class="tab-item pointer">
@@ -129,8 +131,6 @@
                 </div>
             </div>
             <div class="order-detail-wrapper">
-                <!-- 倒三角 -->
-                <div class="triangle"></div>
                 <div class="user-info">
                     <div class="user-address info-part">
                         <img src="./images/location.png" class="location">
@@ -172,7 +172,7 @@
                             <i class="money-icon blue">￥</i>
                             <i class="money-number blue">18</i>
                         </span>
-                        <button class="print-action pointer">打印小票</button>
+                        <button class="print-action">打印小票</button>
                     </div>
                 </div>
             </div>

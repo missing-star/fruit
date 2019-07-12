@@ -3,9 +3,7 @@ new Vue({
     data: {
         currentTime: '0000-00-00 00:00:00',
         currentIndex:1,
-        subCurrentIndex:0,
-        onlineCurrentIndex:0,
-        currentOrder:1
+        subCurrentIndex:0
     },
     methods: {
         getCurrentTime: function () {
@@ -26,17 +24,6 @@ new Vue({
         switchSubTab:function(index) {
             if(this.subCurrentIndex != index) {
                 this.subCurrentIndex = index;
-            }
-        },
-        switchOnlineTab:function(index) {
-            if(this.onlineCurrentIndex != index) {
-                this.onlineCurrentIndex = index;
-            }
-        },
-        getOrderDetail:function(onlineCurrentIndex,currentOrder) {
-            if(this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
-                this.onlineCurrentIndex = onlineCurrentIndex;
-                this.currentOrder = currentOrder;
             }
         }
     },

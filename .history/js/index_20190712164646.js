@@ -33,11 +33,8 @@ new Vue({
                 this.onlineCurrentIndex = index;
             }
         },
-        getOrderDetail:function(onlineCurrentIndex,currentOrder) {
-            if(this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
-                this.onlineCurrentIndex = onlineCurrentIndex;
-                this.currentOrder = currentOrder;
-            }
+        getOrderDetail:function(onlineCurrentIndex,orderId) {
+
         }
     },
     created: function () {

@@ -356,7 +356,7 @@ ul::-webkit-scrollbar {
 }
 
 ul::-webkit-scrollbar {
-    width: 0px;
+    width: 5px;
     /*对垂直流动条有效*/
     height: 0px;
     /*对水平流动条有效*/

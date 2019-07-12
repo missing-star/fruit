@@ -356,7 +356,7 @@ ul::-webkit-scrollbar {
 }
 
 ul::-webkit-scrollbar {
-    width: 0px;
+    width: 5px;
     /*对垂直流动条有效*/
     height: 0px;
     /*对水平流动条有效*/
@@ -483,7 +483,6 @@ li.order-item.active {
     height: 100%;
     background: #F2F5F6;
     padding: 2rem;
-    position: relative;
 }
 
 .user-info {
@@ -643,7 +642,5 @@ p.calculator-title {
     border-top: 1rem solid transparent;
     border-right: 1.7rem solid transparent;
     border-bottom: 1rem solid transparent;
-    position: absolute;
-    left: 0;
-    top: 6.5rem;
+
 }

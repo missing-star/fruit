@@ -94,7 +94,6 @@
                 </ul>
             </div>
         </div>
-        <!-- 线上订单 -->
         <div v-show="currentIndex == 1" class="main-content">
             <div class="operation-wrapper">
                 <ul class="tab-wrapper">
@@ -105,76 +104,15 @@
                 </ul>
                 <div class="order-list-wrapper">
                     <ul v-show="onlineCurrentIndex == 0" class="accept-wrapper">
-                        <li @click="getOrderDetail(0,n)" v-for="n in 20" class="order-item pointer"
-                            :class="{active:currentOrder == n && onlineCurrentIndex == 0}">
-                            <img src="./images/goods.png" class="order-goods-pic">
-                            <div class="order-detail">
-                                <p class="order-number">单号：12365425</p>
-                                <p class="order-date">2019-05-22 12:22:22</p>
-                            </div>
-                            <button class="post-way self">自取</button>
-                        </li>
+
                     </ul>
                     <ul v-show="onlineCurrentIndex == 1" class="accept-wrapper">
-                        <li @click="getOrderDetail(1,n)" v-for="n in 20" class="order-item pointer"
-                            :class="{active:currentOrder == n && onlineCurrentIndex == 1}">
-                            <img src="./images/goods.png" class="order-goods-pic">
-                            <div class="order-detail">
-                                <p class="order-number">单号：12365425</p>
-                                <p class="order-date">2019-05-22 12:22:22</p>
-                            </div>
-                            <button class="post-way post">自取</button>
-                        </li>
+
                     </ul>
                 </div>
             </div>
-            <div class="order-detail-wrapper">
-                <!-- 倒三角 -->
-                <div class="triangle"></div>
-                <div class="user-info">
-                    <div class="user-address info-part">
-                        <img src="./images/location.png" class="location">
-                        <div class="address-detail">
-                            <p class="address">江苏省南京市江宁区泥塘小区2栋1306室</p>
-                            <p class="user-detail">张三 13526987415</p>
-                        </div>
-                    </div>
-                    <div class="user-comment info-part">
-                        <p class="comment-title">备注</p>
-                        <p class="user-detail">多放水果</p>
-                    </div>
-                </div>
-                <ul class="order-detail-goods-list-wrapper">
-                    <li v-for="n in 30" class="order-detail-goods-item">
-                        <img src="./images/goods.png" class="order-detail-goods-pic">
-                        <div class="order-detail-goods-detail">
-                            <p class="title">小泰芒500g</p>
-                            <p class="number-money">
-                                <span class="goods-num">× 1</span>
-                                <span class="goods-price">
-                                    <i class="money-icon black">￥</i>
-                                    <i class="money-number black">18</i>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                </ul>
-                <div class="ticket-print-wrapper">
-                    <div class="is-in-shop">
-                        <div class="checkbox-wrapper">
-                            <div class="checkbox-inner"></div>
-                        </div>
-                        <span class="check-titl">到店自取</span>
-                    </div>
-                    <div class="right-calculator">
-                        <p class="calculator-title">合计</p>
-                        <span class="goods-price">
-                            <i class="money-icon blue">￥</i>
-                            <i class="money-number blue">18</i>
-                        </span>
-                        <button class="print-action pointer">打印小票</button>
-                    </div>
-                </div>
+            <div class="goods-choice-wrapper">
+
             </div>
         </div>
         <div v-show="currentIndex == 2" class="main-content">
