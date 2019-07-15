@@ -320,9 +320,6 @@ li.goods-category-item::after{
     height: 1px;
     background: #FFFFFF;
 }
-li.goods-category-item.active::after{
-    height: 0;
-}
 
 li.goods-category-item.active {
     background: #21AFE9;

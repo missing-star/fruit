@@ -19,12 +19,6 @@ body {
     color: #333333;
     font-style: normal;
 }
-[v-cloak] {
-    display: none;
-}
-.nowrap{
-    white-space: nowrap;
-}
 
 header.title-bar {
     background: #F2F5F6;
@@ -310,18 +304,7 @@ li.goods-category-item {
     height: 4rem;
     background: #EAEFF1;
     color: #5D5D5D;
-    position: relative;
-}
-li.goods-category-item::after{
-    content: '';
-    position: absolute;
-    bottom: 0;
-    width: 60%;
-    height: 1px;
-    background: #FFFFFF;
-}
-li.goods-category-item.active::after{
-    height: 0;
+    border-bottom: 2px solid #FFFFFF;
 }
 
 li.goods-category-item.active {
@@ -593,7 +576,7 @@ li.order-detail-goods-item {
     padding-left: 1rem;
 }
 
-p.number-money,div.number-money {
+p.number-money {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -686,10 +669,7 @@ p.calculator-title {
     justify-content: center;
     visibility: hidden;
 }
-.dialog-main-content.medium {
-    width: 43%;
-    height: 58%;
-}
+
 .dialog-wrapper.active {
     visibility: visible;
 }
@@ -711,7 +691,6 @@ div.dialog-mask {
     border-radius: 2rem;
     transition: all 0.5s ease-in-out;
     opacity: 0;
-    min-width: 750px;
 }
 
 .dialog-main-content.active {
@@ -837,7 +816,7 @@ button.delete-order.pointer {
     background: transparent;
     font-size: 1.5rem;
     border-radius: 0.6rem;
-    margin: 0 5%;
+    margin: 0 1rem;
 }
 button.next.pointer{
     border: none;
@@ -849,191 +828,4 @@ button.next.pointer{
     background: #21AFE9;
     font-size: 1.5rem;
     border-radius: 0.6rem;
-    margin: 0 5%;
 }
-span.single-price {
-    color: #888888;
-}
-span.goods-total-weight {
-    color: #FE7204;
-    font-size: 1.3rem;
-}
-.order-list-right.calculator{
-    height: 100%;
-    border-bottom-right-radius: 2rem;
-    padding: 0;
-}
-.order-list-right.calculator ul{
-    height: 100%;
-    border-bottom-right-radius: 2rem;
-}
-span.total-money,div.total-money {
-    background: #FFFFFF;
-    color: #FE7204;
-    font-size: 2.5rem;
-    padding: 1.5rem;
-    text-align: center;
-    border-radius: 0.5rem;
-}
-p.total-money-title,p.order-info.title {
-    font-size: 1.1rem;
-    padding: 1rem 0;
-}
-p.order-info.number, p.order-info.deal-pay {
-    font-size: 1rem;
-    line-height: 2rem;
-}
-.order-info.wrapper {
-    background: #FFFFFF;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-}
-p.order-info.number {
-    border-bottom: 1px solid #F2F5F6;
-}
-.order-info-wrapper {
-    margin-top: 1rem;
-}
-button.go-cash.pointer {
-    background: #21AFE9;
-    border: none;
-    outline: 0;
-    color: #FFFFFF;
-    width: 100%;
-    padding: 1rem;
-    font-size: 1.2rem;
-    border-radius: 0.5rem;
-    margin-top: 40%;
-}
-div.corner{
-    width: 10%;
-    height: 10%;
-}
-.order-list-wrapper.dialog.column{
-    flex-direction: column;
-    justify-content: space-around;
-}
-.qrcode-wrapper {
-    width: 100%;
-    height: 65%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-}
-.qrcode-show-wrapper {
-    width: 15vw;
-    height: 15vw;
-    position: relative;
-}
-div.corner {
-    width: 2rem;
-    height: 2rem;
-    position: absolute;
-    border: none;
-    border-radius: 2px;
-}
-div.corner.left{
-    border-left: 4px solid #009FE9;
-    left: 0;
-}
-div.corner.right{
-    border-right: 4px solid #009FE9;
-    right:0;
-}
-div.corner.top{
-    border-top:4px solid #009FE9;
-    top:0;
-}
-div.corner.bottom{
-    border-bottom: 4px solid #009FE9;
-    bottom:0;
-}
-.scan-tips {
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2rem;
-}
-img.scan-icon {
-    width: 2rem;
-    height: auto;
-}
-p.scan-tips-title {
-    padding-left: 0.5rem;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-.total-money-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-button.total-money.dialog {
-    background: #21AFE9;
-    border: none;
-    outline: 0;
-    border-radius: 10rem;
-    color: #FFFFFF;
-    position: relative;
-    padding: 1rem 2.5rem;
-}
-span.money {
-    color: #FFFFFF;
-    font-size: 2rem;
-}
-span.money-tips {
-    color: #FFFFFF;
-    font-size: 0.6rem;
-}
-p.show-order-number {
-    color: #666666;
-    font-size: 1rem;
-    padding-top: 1rem;
-}
-.input-wrapper {
-    width: 100%;
-    margin: 0 auto;
-}
-label.input-title {
-    font-size: 2rem;
-}
-.input-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 3rem 0;
-}
-input.input-content {
-    height: 3.5rem;
-    width: 50%;
-    border: none;
-    outline: 0;
-    background: #F2F5F6;
-    font-size: 1.5rem;
-    border-radius: 0.5rem;
-}
-.order-list-wrapper.dialog.column.white {
-    background: #FFFFFF;
-}
-button.confirm {
-    background: #21AFE9;
-    outline: 0;
-    border: none;
-    width: 40%;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    color: #FFFFFF;
-    font-size: 1.2rem;
-    margin: 0 auto;
-    margin-bottom: 3rem;
-}
-input[type=number] {  
-    -moz-appearance:textfield;  
-}  
-input[type=number]::-webkit-inner-spin-button,  
-input[type=number]::-webkit-outer-spin-button {  
-    -webkit-appearance: none;  
-    margin: 0;  
-}  

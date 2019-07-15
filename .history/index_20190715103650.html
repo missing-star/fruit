@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div id="app" v-cloak>
+    <div id="app">
         <header class="title-bar">
             <p class="title">水果收银系统</p>
             <div class="right-part-show">
@@ -67,10 +67,10 @@
                     </div>
                     <div class="operation-group">
                         <div class="left-part">
-                            <button @click="showDialog(0)" class="order-list pointer">挂单列表</button>
+                            <button class="order-list pointer">挂单列表</button>
                             <button class="go-order pointer">挂单</button>
                         </div>
-                        <button @click="showDialog(1)" class="right-part pointer">
+                        <button class="right-part pointer">
                             结算
                         </button>
                     </div>
@@ -244,15 +244,15 @@
 
         </div>
         <!-- dialog -->
-        <div class="dialog-wrapper" :class="{active:isShowDialog}">
+        <div class="dialog-wrapper" :class="{active:showDialog}">
             <div class="dialog-mask"></div>
-            <div class="dialog-main-content" :class="{active:isShowDialog,medium:dialogIndex == 3}">
+            <div class="dialog-main-content" :class={active:showDialog}>
                 <div class="dialog-title-wrapper">
-                    <p class="dialog-title">{{dialogTitle}}</p>
+                    <p class="dialog-title">标题</p>
                     <button @click="closeDialog" class="dialog-close pointer">×</button>
                 </div>
                 <!-- 挂单 -->
-                <div v-show="dialogIndex == 0" class="order-list-wrapper dialog">
+                <div class="order-list-wrapper dialog">
                     <div class="order-list-left">
                         <p class="order-list-title">挂单列表</p>
                         <ul class="order-list">
@@ -263,129 +263,30 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="order-list-right">
+                    <ul class="order-detail-goods-list-wrapper dialog">
                         <!-- 倒三角 -->
-                        <div class="triangle deep"></div>
-                        <ul class="order-detail-goods-list-wrapper dialog">
-                            <li v-for="n in 30" class="order-detail-goods-item dialog">
-                                <img src="./images/goods.png" class="order-detail-goods-pic">
-                                <div class="order-detail-goods-detail">
-                                    <p class="title">小泰芒500g</p>
-                                    <div class="number-money">
-                                        <span class="goods-total-weight">重量：1kg</span>
-                                        <p class="price-and-weight">
-                                            <span class="single-price">
-                                                ¥ 13/500g
-                                            </span>
-                                            <span class="goods-price">
-                                                <i class="money-icon black">￥</i>
-                                                <i class="money-number black">18</i>
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="order-operation">
-                            <button class="delete-order pointer nowrap">删除</button>
-                            <button @click="showDialog(1)" class="next pointer nowrap">继续</button>
-                        </div>
-                    </div>
+                        <div class="triangle"></div>
+                        <li v-for="n in 30" class="order-detail-goods-item">
+                            <img src="./images/goods.png" class="order-detail-goods-pic">
+                            <div class="order-detail-goods-detail">
+                                <p class="title">小泰芒500g</p>
+                                <p class="number-money">
+                                    <span class="goods-num">× 1</span>
+                                    <span class="goods-price">
+                                        <i class="money-icon black">￥</i>
+                                        <i class="money-number black">18</i>
+                                    </span>
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
                 <!-- 结算 -->
-                <div v-show="dialogIndex == 1" class="order-list-wrapper dialog">
-                    <div class="order-list-left calculator">
-                        <div class="order-total-money-wrapper">
-                            <p class="total-money-title">订单总额</p>
-                            <div class="total-money">30.00</div>
-                        </div>
-                        <div class="order-info-wrapper">
-                            <p class="order-info title">基本信息</p>
-                            <div class="order-info wrapper">
-                                <p class="order-info number">订单号：123654</p>
-                                <p class="order-info deal-pay">处理方式：线下订单</p>
-                            </div>
-                        </div>
-                        <button @click="showDialog(2)" class="go-cash pointer">结算</button>
-                    </div>
-                    <div class="order-list-right calculator">
-                        <ul class="order-detail-goods-list-wrapper dialog">
-                            <li v-for="n in 30" class="order-detail-goods-item dialog">
-                                <img src="./images/goods.png" class="order-detail-goods-pic">
-                                <div class="order-detail-goods-detail">
-                                    <p class="title">小泰芒500g</p>
-                                    <div class="number-money">
-                                        <span class="goods-total-weight">重量：1kg</span>
-                                        <p class="price-and-weight">
-                                            <span class="single-price">
-                                                ¥ 13/500g
-                                            </span>
-                                            <span class="goods-price">
-                                                <i class="money-icon black">￥</i>
-                                                <i class="money-number black">18</i>
-                                            </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
                 <!-- 扫码 -->
-                <div v-show="dialogIndex == 2" class="order-list-wrapper dialog column">
-                    <div class="qrcode-wrapper">
-                        <div class="qrcode-wrapper-item">
-                            <div class="qrcode-show-wrapper">
-                                <div class="corner left top"></div>
-                                <div class="corner left bottom"></div>
-                                <div class="corner right top"></div>
-                                <div class="corner right bottom"></div>
-                            </div>
-                            <div class="scan-tips">
-                                <img src="./images/wechat.png" class="scan-icon">
-                                <p class="scan-tips-title">微信扫一扫</p>
-                            </div>
-                        </div>
-                        <div class="qrcode-wrapper-item">
-                            <div class="qrcode-show-wrapper">
-                                <div class="corner left top"></div>
-                                <div class="corner left bottom"></div>
-                                <div class="corner right top"></div>
-                                <div class="corner right bottom"></div>
-                            </div>
-                            <div class="scan-tips">
-                                <img src="./images/alipay.png" class="scan-icon">
-                                <p class="scan-tips-title">支付宝扫一扫</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="total-money-wrapper">
-                        <button class="total-money dialog">
-                            <span class="money">￥26.00</span>
-                            <span class="money-tips">总额</span>
-                        </button>
-                        <p class="show-order-number">订单号：123654</p>
-                    </div>
-                </div>
-                <!-- 非水果商品 -->
-                <div v-show="dialogIndex == 3" class="order-list-wrapper dialog column white">
-                    <div class="input-wrapper">
-                        <div class="input-item">
-                            <label class="input-title">单价：</label>
-                            <input type="number" class="input-content">
-                        </div>
-                        <div class="input-item">
-                            <label class="input-title">数量：</label>
-                            <input type="text" class="input-content">
-                        </div>
-                    </div>
-                    <button class="confirm">确定</button>
-                </div>
             </div>
         </div>
     </div>
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
-    <script src="./js/axios.min.js"></script>
     <script src="./js/index.js"></script>
 </body>
 

@@ -19,9 +19,6 @@ body {
     color: #333333;
     font-style: normal;
 }
-[v-cloak] {
-    display: none;
-}
 .nowrap{
     white-space: nowrap;
 }
@@ -310,18 +307,7 @@ li.goods-category-item {
     height: 4rem;
     background: #EAEFF1;
     color: #5D5D5D;
-    position: relative;
-}
-li.goods-category-item::after{
-    content: '';
-    position: absolute;
-    bottom: 0;
-    width: 60%;
-    height: 1px;
-    background: #FFFFFF;
-}
-li.goods-category-item.active::after{
-    height: 0;
+    border-bottom: 2px solid #FFFFFF;
 }
 
 li.goods-category-item.active {
@@ -867,7 +853,7 @@ span.goods-total-weight {
     height: 100%;
     border-bottom-right-radius: 2rem;
 }
-span.total-money,div.total-money {
+.total-money {
     background: #FFFFFF;
     color: #FE7204;
     font-size: 2.5rem;

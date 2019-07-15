@@ -321,7 +321,7 @@ li.goods-category-item::after{
     background: #FFFFFF;
 }
 li.goods-category-item.active::after{
-    height: 0;
+    height: 0;;
 }
 
 li.goods-category-item.active {

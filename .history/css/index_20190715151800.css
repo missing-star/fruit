@@ -318,10 +318,7 @@ li.goods-category-item::after{
     bottom: 0;
     width: 60%;
     height: 1px;
-    background: #FFFFFF;
-}
-li.goods-category-item.active::after{
-    height: 0;
+    
 }
 
 li.goods-category-item.active {

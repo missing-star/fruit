@@ -2,7 +2,7 @@ new Vue({
     el: '#app',
     data: {
         currentTime: '0000-00-00 00:00:00',
-        currentIndex: 0,
+        currentIndex: 1,
         subCurrentIndex: 0,
         onlineCurrentIndex: 0,
         currentOrder: 1,
@@ -81,7 +81,6 @@ new Vue({
         },
         showDialog: function (type) {
             this.isShowDialog = true;
-            this.dialogIndex = type;
             switch (type) {
                 case 0:
                     // 挂单
@@ -106,22 +105,13 @@ new Vue({
          */
         closeDialog: function () {
             this.isShowDialog = false;
-        },
-        testAxios:function() {
-            axios.get('data/user.json').then(function(data) {
-                console.log(data);
-            }).catch(function(err) {
-                console.log(err)
-            })
         }
     },
     created: function () {
-        // axios.defaults.baseURL = 'http://127.0.0.1:5500';
         var vm = this;
         vm.getCurrentTime();
         setInterval(function () {
             vm.getCurrentTime();
         }, 1000);
-        this.testAxios();
     }
 });

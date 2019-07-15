@@ -108,7 +108,7 @@ new Vue({
             this.isShowDialog = false;
         },
         testAxios:function() {
-            axios.get('data/user.json').then(function(data) {
+            axios.get('../data/user.jsosn').then(function(data) {
                 console.log(data);
             }).catch(function(err) {
                 console.log(err)
@@ -116,7 +116,7 @@ new Vue({
         }
     },
     created: function () {
-        // axios.defaults.baseURL = 'http://127.0.0.1:5500';
+        axios.defaults.baseURL = 'https://api.example.com'
         var vm = this;
         vm.getCurrentTime();
         setInterval(function () {

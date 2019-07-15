@@ -1,0 +1,85 @@
+new Vue({
+    el: '#app',
+    data: {
+        currentTime: '0000-00-00 00:00:00',
+        currentIndex:1,
+        subCurrentIndex:0,
+        onlineCurrentIndex:0,
+        currentOrder:1,
+        currentOrderDialog:1,
+        showDialog:true,
+        dialogTitle:'结算',
+        dialogIndex:3,//0==>挂单，1==>结算，2==>扫码，3==>非水果
+    },
+    methods: {
+        /**
+         * 获取当前时间
+         */
+        getCurrentTime: function () {
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+            var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+            var hour = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+            var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+            var second = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+            this.currentTime = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        },
+        /**
+         * 切换顶部tab
+         * @param {number} index 
+         */
+        switchTab:function(index) {
+            if(this.currentIndex != index) {
+                this.currentIndex = index;
+            }
+        },
+        /**
+         * 切换结算区右侧tab
+         * @param {number} index 
+         */
+        switchSubTab:function(index) {
+            if(this.subCurrentIndex != index) {
+                this.subCurrentIndex = index;
+            }
+        },
+        /**
+         * 切换在线订单tab
+         * @param {number} index 
+         */
+        switchOnlineTab:function(index) {
+            if(this.onlineCurrentIndex != index) {
+                this.onlineCurrentIndex = index;
+            }
+        },
+        /**
+         * 
+         * @param {number} onlineCurrentIndex 
+         * @param {number} currentOrder 
+         */
+        getOrderDetail:function(onlineCurrentIndex,currentOrder) {
+            if(this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
+                this.onlineCurrentIndex = onlineCurrentIndex;
+                this.currentOrder = currentOrder;
+            }
+        },
+        getOrderDetailDialog:function(currentOrderDialog) {
+            if(this.currentOrderDialog != currentOrderDialog) {
+                this.currentOrderDialog = currentOrderDialog;
+            }
+        },
+        printTick:function() {
+            this.showDialog = true;
+        },
+        closeDialog:function() {
+            this.showDialog = false;
+        }
+    },
+    created: function () {
+        var vm = this;
+        vm.getCurrentTime();
+        setInterval(function(){
+            vm.getCurrentTime();
+        }, 1000);
+    }
+});

@@ -2,14 +2,14 @@ new Vue({
     el: '#app',
     data: {
         currentTime: '0000-00-00 00:00:00',
-        currentIndex: 0,
-        subCurrentIndex: 0,
-        onlineCurrentIndex: 0,
-        currentOrder: 1,
-        currentOrderDialog: 1,
-        isShowDialog: false,
-        dialogTitle: '',
-        dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果
+        currentIndex:1,
+        subCurrentIndex:0,
+        onlineCurrentIndex:0,
+        currentOrder:1,
+        currentOrderDialog:1,
+        showDialog:true,
+        dialogTitle:'结算',
+        dialogIndex:0,//0==>挂单，1==>结算，2==>扫码，3==>非水果
     },
     methods: {
         /**
@@ -29,8 +29,8 @@ new Vue({
          * 切换顶部tab
          * @param {number} index 
          */
-        switchTab: function (index) {
-            if (this.currentIndex != index) {
+        switchTab:function(index) {
+            if(this.currentIndex != index) {
                 this.currentIndex = index;
             }
         },
@@ -38,8 +38,8 @@ new Vue({
          * 切换结算区右侧tab
          * @param {number} index 
          */
-        switchSubTab: function (index) {
-            if (this.subCurrentIndex != index) {
+        switchSubTab:function(index) {
+            if(this.subCurrentIndex != index) {
                 this.subCurrentIndex = index;
             }
         },
@@ -47,8 +47,8 @@ new Vue({
          * 切换在线订单接单/未接单tab
          * @param {number} index 
          */
-        switchOnlineTab: function (index) {
-            if (this.onlineCurrentIndex != index) {
+        switchOnlineTab:function(index) {
+            if(this.onlineCurrentIndex != index) {
                 this.onlineCurrentIndex = index;
             }
         },
@@ -57,8 +57,8 @@ new Vue({
          * @param {number} onlineCurrentIndex 
          * @param {number} currentOrder 
          */
-        getOrderDetail: function (onlineCurrentIndex, currentOrder) {
-            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
+        getOrderDetail:function(onlineCurrentIndex,currentOrder) {
+            if(this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
                 this.onlineCurrentIndex = onlineCurrentIndex;
                 this.currentOrder = currentOrder;
             }
@@ -67,61 +67,29 @@ new Vue({
          * 切换挂单列表里的订单
          * @param {number} currentOrderDialog 
          */
-        getOrderDetailDialog: function (currentOrderDialog) {
-            if (this.currentOrderDialog != currentOrderDialog) {
+        getOrderDetailDialog:function(currentOrderDialog) {
+            if(this.currentOrderDialog != currentOrderDialog) {
                 this.currentOrderDialog = currentOrderDialog;
             }
         },
         /**
          * 打印小票
-         * @param {number} type
          */
-        printTick: function () {
-
-        },
-        showDialog: function (type) {
-            this.isShowDialog = true;
-            this.dialogIndex = type;
-            switch (type) {
-                case 0:
-                    // 挂单
-                    this.dialogTitle = '挂单';
-                    break;
-                case 1:
-                    // 结算
-                    this.dialogTitle = '结算';
-                    break;
-                case 2:
-                    // 扫码
-                    this.dialogTitle = '结算';
-                    break;
-                case 3:
-                    // 非水果
-                    this.dialogTitle = '非水果类商品';
-                    break;
-            }
+        printTick:function() {
+            this.showDialog = true;
         },
         /**
          * 关闭dialog
          */
-        closeDialog: function () {
-            this.isShowDialog = false;
-        },
-        testAxios:function() {
-            axios.get('data/user.json').then(function(data) {
-                console.log(data);
-            }).catch(function(err) {
-                console.log(err)
-            })
+        closeDialog:function() {
+            this.showDialog = false;
         }
     },
     created: function () {
-        // axios.defaults.baseURL = 'http://127.0.0.1:5500';
         var vm = this;
         vm.getCurrentTime();
-        setInterval(function () {
+        setInterval(function(){
             vm.getCurrentTime();
         }, 1000);
-        this.testAxios();
     }
 });
