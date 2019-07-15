@@ -42,7 +42,6 @@ new Vue({
          */
         toggleOpen:function() {
             this.isOpen = !this.isOpen;
-            localStorage.setItem('isOpen',this.isOpen.toString());
         },
         /**
          * 切换结算区右侧tab

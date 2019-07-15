@@ -1042,55 +1042,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 80%;
     display: flex;
     align-items: center;
+    /* justify-content: center; */
     margin: 0 auto;
     height: 4rem;
-    margin-top: 5rem;
-    justify-content: space-between;
-}
-p.distinguish-title {
-    font-size: 2rem;
-    color: #333333;
-}
-button.save-open.pointer {
-    background: #21AFE9;
-    border: none;
-    outline: 0;
-    width: 40%;
-    margin: 0 auto;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    color: #FFFFFF;
-    font-size: 1.5rem;
-}
-.switch-wrapper {
-    width: 5rem;
-    height: 2.5rem;
-    background: #EBEBEB;
-    border-radius: 10rem;
-    position: relative;
-}
-.switch-wrapper.active {
-    background: #FF7F5C;
-}
-.switch-dot {
-    width: 2.1rem;
-    height: 2.1rem;
-    border-radius: 50%;
-    background: #FFFFFF;
-    position: absolute;
-    left: 0.2rem;
-    top: 0.2rem;
-    box-shadow:0px 0px 3px 1px #D1D1D1;
-    transition: all ease 0.2s;
-}
-.switch-dot.active{
-    width: 2.1rem;
-    height: 2.1rem;
-    border-radius: 50%;
-    background: #FFFFFF;
-    position: absolute;
-    left: 2.7rem;
-    top: 0.2rem;
-    box-shadow: 0px 0px 3px 1px rgba(202,95,66,1);
-    transition: all ease 0.2s;
 }

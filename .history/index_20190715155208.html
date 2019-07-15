@@ -14,7 +14,7 @@
         <header class="title-bar">
             <p class="title">水果收银系统</p>
             <div class="right-part-show">
-                <img @click="showDialog(4)" src="./images/setting.png" alt="设置" class="setting-icon">
+                <img src="./images/setting.png" alt="设置" class="setting-icon">
                 <p class="show-current-time">{{currentTime}}</p>
             </div>
         </header>
@@ -200,7 +200,7 @@
                     </ul>
                     <ul v-show="onlineCurrentIndex == 1" class="accept-wrapper">
                         <li @click="getOrderDetailOffline(1,n)" v-for="n in 20" class="order-item pointer"
-                            :class="{active:currentOrderOffline == n && onlineCurrentIndex == 1}">
+                            :class="{active:currentOrder == n && onlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：12365425</p>
@@ -247,7 +247,7 @@
         <!-- dialog -->
         <div class="dialog-wrapper" :class="{active:isShowDialog}">
             <div class="dialog-mask"></div>
-            <div class="dialog-main-content" :class="{active:isShowDialog,medium:dialogIndex == 3 || dialogIndex == 4}">
+            <div class="dialog-main-content" :class="{active:isShowDialog,medium:dialogIndex == 3}">
                 <div class="dialog-title-wrapper">
                     <p class="dialog-title">{{dialogTitle}}</p>
                     <button @click="closeDialog" class="dialog-close pointer">×</button>
@@ -381,16 +381,6 @@
                         </div>
                     </div>
                     <button class="confirm">确定</button>
-                </div>
-                <!-- 设置 -->
-                <div v-show="dialogIndex == 4" class="order-list-wrapper dialog column white">
-                    <div class="open-fruit-distinguish-wrapper">
-                        <p class="distinguish-title">是否开启水果识别</p>
-                        <div @click="toggleOpen" class="switch-wrapper pointer" :class="{active:isOpen}">
-                            <div class="switch-dot" :class="{active:isOpen}"></div>
-                        </div>
-                    </div>
-                    <button class="save-open pointer">保存</button>
                 </div>
             </div>
         </div>

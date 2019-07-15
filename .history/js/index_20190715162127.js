@@ -11,8 +11,7 @@ new Vue({
         currentOrderDialog: 1,
         isShowDialog: false,
         dialogTitle: '',
-        dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果，4==>设置
-        isOpen:false
+        dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果
     },
     methods: {
         /**
@@ -36,13 +35,6 @@ new Vue({
             if (this.currentIndex != index) {
                 this.currentIndex = index;
             }
-        },
-        /**
-         *切换开关 
-         */
-        toggleOpen:function() {
-            this.isOpen = !this.isOpen;
-            localStorage.setItem('isOpen',this.isOpen.toString());
         },
         /**
          * 切换结算区右侧tab
@@ -129,10 +121,6 @@ new Vue({
                     // 非水果
                     this.dialogTitle = '非水果类商品';
                     break;
-                case 4:
-                    // 设置
-                    this.dialogTitle = '设置';
-                    break;
             }
         },
         /**
@@ -146,13 +134,25 @@ new Vue({
          */
         getWeight: function () {
             setInterval(function () {
-                axios.get("http://127.0.0.1:5017/api/Scale/Weight").then(function (data) {
-                    if (data.data.IsSteady == 1) {
-                        // 已经稳定
-                        console.log(data.data.Weight.toFixed(3));
+                $.ajax({
+                    url: "http://" + window.location.host + "/api/Scale/Weight",
+                    dataType: "json",
+                    type: 'get',
+                    cache: false, //IE下要关闭cache，否则不会刷新
+                    data: null,
+                    success: function (data) {
+
+                        $("#span_weight").html(data.Weight.toFixed(3));
+
+                        if (data.IsSteady == 0) {
+                            $("#span_weight").css("color", "red");
+                        } else {
+                            $("#span_weight").css("color", "green");
+                        }
+                    },
+                    error: function (XMLHttpRequest) {
+                        alert("获取重量失败, " + XMLHttpRequest.responseJSON.Message);
                     }
-                }).catch(function (err) {
-                    console.log(err);
                 });
             }, 100);
         }
@@ -164,6 +164,6 @@ new Vue({
         setInterval(function () {
             vm.getCurrentTime();
         }, 1000);
-        this.getWeight();
+        this.testAxios();
     }
 });

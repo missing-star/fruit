@@ -11,8 +11,7 @@ new Vue({
         currentOrderDialog: 1,
         isShowDialog: false,
         dialogTitle: '',
-        dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果，4==>设置
-        isOpen:false
+        dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果
     },
     methods: {
         /**
@@ -36,13 +35,6 @@ new Vue({
             if (this.currentIndex != index) {
                 this.currentIndex = index;
             }
-        },
-        /**
-         *切换开关 
-         */
-        toggleOpen:function() {
-            this.isOpen = !this.isOpen;
-            localStorage.setItem('isOpen',this.isOpen.toString());
         },
         /**
          * 切换结算区右侧tab
@@ -128,10 +120,6 @@ new Vue({
                 case 3:
                     // 非水果
                     this.dialogTitle = '非水果类商品';
-                    break;
-                case 4:
-                    // 设置
-                    this.dialogTitle = '设置';
                     break;
             }
         },

@@ -12,7 +12,6 @@ new Vue({
         isShowDialog: false,
         dialogTitle: '',
         dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果，4==>设置
-        isOpen:false
     },
     methods: {
         /**
@@ -36,13 +35,6 @@ new Vue({
             if (this.currentIndex != index) {
                 this.currentIndex = index;
             }
-        },
-        /**
-         *切换开关 
-         */
-        toggleOpen:function() {
-            this.isOpen = !this.isOpen;
-            localStorage.setItem('isOpen',this.isOpen.toString());
         },
         /**
          * 切换结算区右侧tab
@@ -108,6 +100,12 @@ new Vue({
          */
         printTick: function () {
 
+        },
+        /**
+         * 设置（是否开启水果识别）
+         */
+        setting: function () {
+            this.showDialog(4);
         },
         showDialog: function (type) {
             this.isShowDialog = true;

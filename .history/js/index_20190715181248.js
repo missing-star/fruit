@@ -12,7 +12,7 @@ new Vue({
         isShowDialog: false,
         dialogTitle: '',
         dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果，4==>设置
-        isOpen:false
+        isOpen:localStorage.getItem('isOpen') ? localStorage.getItem(isOpen) : false
     },
     methods: {
         /**

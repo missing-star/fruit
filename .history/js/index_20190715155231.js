@@ -7,12 +7,10 @@ new Vue({
         onlineCurrentIndex: 0,
         offlineCurrentIndex: 0,
         currentOrder: 1,
-        currentOrderOffline: 1,
         currentOrderDialog: 1,
         isShowDialog: false,
         dialogTitle: '',
-        dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果，4==>设置
-        isOpen:false
+        dialogIndex: 0, //0==>挂单，1==>结算，2==>扫码，3==>非水果
     },
     methods: {
         /**
@@ -36,13 +34,6 @@ new Vue({
             if (this.currentIndex != index) {
                 this.currentIndex = index;
             }
-        },
-        /**
-         *切换开关 
-         */
-        toggleOpen:function() {
-            this.isOpen = !this.isOpen;
-            localStorage.setItem('isOpen',this.isOpen.toString());
         },
         /**
          * 切换结算区右侧tab
@@ -88,9 +79,9 @@ new Vue({
          * @param {number} currentOrder 
          */
         getOrderDetail: function (onlineCurrentIndex, currentOrder) {
-            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrder != this.currentOrderOffline) {
-                this.offlineCurrentIndex = offlineCurrentIndex;
-                this.currentOrderOffline = currentOrder;
+            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
+                this.onlineCurrentIndex = onlineCurrentIndex;
+                this.currentOrder = currentOrder;
             }
         },
         /**
@@ -129,10 +120,6 @@ new Vue({
                     // 非水果
                     this.dialogTitle = '非水果类商品';
                     break;
-                case 4:
-                    // 设置
-                    this.dialogTitle = '设置';
-                    break;
             }
         },
         /**
@@ -142,19 +129,14 @@ new Vue({
             this.isShowDialog = false;
         },
         /**
-         * 获取重量
+         * 测试axios请求
          */
-        getWeight: function () {
-            setInterval(function () {
-                axios.get("http://127.0.0.1:5017/api/Scale/Weight").then(function (data) {
-                    if (data.data.IsSteady == 1) {
-                        // 已经稳定
-                        console.log(data.data.Weight.toFixed(3));
-                    }
-                }).catch(function (err) {
-                    console.log(err);
-                });
-            }, 100);
+        testAxios: function () {
+            axios.get('data/user.json').then(function (data) {
+                console.log(data);
+            }).catch(function (err) {
+                console.log(err)
+            })
         }
     },
     created: function () {
@@ -164,6 +146,6 @@ new Vue({
         setInterval(function () {
             vm.getCurrentTime();
         }, 1000);
-        this.getWeight();
+        this.testAxios();
     }
 });
