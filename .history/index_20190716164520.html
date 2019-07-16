@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>水果收银系统</title>
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+
+<body>
+    <div id="app" v-cloak>
+        <header class="title-bar">
+            <p class="title">水果收银系统</p>
+            <div class="right-part-show">
+                <img @click="showDialog(4)" src="./images/setting.png" alt="设置" class="setting-icon">
+                <p class="show-current-time">{{currentTime}}</p>
+            </div>
+        </header>
+        <ul class="category-tab">
+            <li class="category-item" :class="{active:currentIndex == 0}" @click="switchTab(0)">
+                <p class="category-title">结算区</p>
+            </li>
+            <li class="category-item" :class="{active:currentIndex == 1}" @click="switchTab(1)">
+                <p class="category-title">线上订单</p>
+            </li>
+            <li class="category-item" :class="{active:currentIndex == 2}" @click="switchTab(2)">
+                <p class="category-title">线下订单</p>
+            </li>
+            <li class="category-item" :class="{active:currentIndex == 3}" @click="switchTab(3)">
+                <p class="category-title">商家报表</p>
+            </li>
+        </ul>
+        <!-- 结算区 -->
+        <div v-show="currentIndex == 0" class="main-content">
+            <div class="operation-wrapper">
+                <ul class="goods-list-wrapper">
+                    <li v-for="n in 10" class="goods-item">
+                        <div class="goods-pic-wrapper">
+                            <span class="delete-icon pointer"></span>
+                            <img src="./images/goods.png" class="goods-pic">
+                        </div>
+                        <div class="goods-detail">
+                            <p class="goods-title">苹果</p>
+                            <p class="goods-spec">规格：12元/250g</p>
+                            <p class="goods-money">
+                                <span class="goods-weight">重量357g</span>
+                                <span class="goods-price">
+                                    <i class="money-icon black">￥</i>
+                                    <i class="money-number black">18</i>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="calculator-scope">
+                    <div class="show-total-money">
+                        <p class="total-title">共4件商品</p>
+                        <p class="total-money">
+                            <span class="money-title">合计</span>
+                            <span class="show-money">
+                                <i class="money-icon blue">￥</i>
+                                <i class="money-number blue">54.00</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="operation-group">
+                        <div class="left-part">
+                            <button @click="showDialog(0)" class="order-list pointer">挂单列表</button>
+                            <button class="go-order pointer">挂单</button>
+                        </div>
+                        <button @click="showDialog(1)" class="right-part pointer">
+                            结算
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="goods-choice-wrapper">
+                <ul class="goods-category-wrapper">
+                    <li @click="switchSubTab(item.categoryCode)" :class="{active:subCurrentIndex == item.categoryCode}"
+                        :key="item.categoryCode" v-for="item in categoryList" class="goods-category-item pointer">
+                        {{item.categoryName}}
+                    </li>
+                </ul>
+                <ul class="goods-choice-list">
+                    <li :key="item.id" v-for="item in goodsList" class="goods-choice-item pointer">
+                        <img :src="item.productPic1" class="goods-show-pic">
+                        <p class="goods-desc">
+                            <span class="goods-name">{{item.productName}}</span>
+                            <span class="price-weight">{{item.productPrice}}元 / 250g</span>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 线上订单 -->
+        <div v-show="currentIndex == 1" class="main-content">
+            <div class="operation-wrapper">
+                <ul class="tab-wrapper">
+                    <li @click="switchOnlineTab(0)" :class="{active:onlineCurrentIndex == 0}" class="tab-item pointer">
+                        未接单</li>
+                    <li @click="switchOnlineTab(1)" :class="{active:onlineCurrentIndex == 1}" class="tab-item pointer">
+                        已接单</li>
+                </ul>
+                <div class="order-list-wrapper">
+                    <ul v-show="onlineCurrentIndex == 0" class="accept-wrapper">
+                        <li @click="getOrderDetail(0,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 0})"
+                            class="order-item pointer"
+                            :class="{active:currentOrder == item.orderCode && onlineCurrentIndex == 0}">
+                            <img src="./images/goods.png" class="order-goods-pic">
+                            <div class="order-detail">
+                                <p class="order-number">单号：{{item.orderCode}}</p>
+                                <p class="order-date">{{item.createTime}}</p>
+                            </div>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
+                        </li>
+                    </ul>
+                    <ul v-show="onlineCurrentIndex == 1" class="accept-wrapper">
+                        <li @click="getOrderDetail(1,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 1})"
+                            class="order-item pointer"
+                            :class="{active:currentOrder == item.orderCode && onlineCurrentIndex == 1}">
+                            <img src="./images/goods.png" class="order-goods-pic">
+                            <div class="order-detail">
+                                <p class="order-number">单号：{{item.orderCode}}</p>
+                                <p class="order-date">{{item.createTime}}</p>
+                            </div>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div v-show="orderDetailOnline.orderCode != -1" class="order-detail-wrapper">
+                <!-- 倒三角 -->
+                <div class="triangle"></div>
+                <div class="user-info">
+                    <div class="user-address info-part">
+                        <img src="./images/location.png" class="location">
+                        <div class="address-detail">
+                            <p class="address">{{orderDetailOnline.address}}</p>
+                            <p class="user-detail">{{orderDetailOnline.name +' '+ orderDetailOnline.phone}}</p>
+                        </div>
+                    </div>
+                    <div class="user-comment info-part">
+                        <p class="comment-title">备注</p>
+                        <p class="user-detail">{{orderDetailOnline.beizhu}}</p>
+                    </div>
+                </div>
+                <ul class="order-detail-goods-list-wrapper">
+                    <li :key="item.productCode" v-for="item in orderDetailOnline.orderDetailList"
+                        class="order-detail-goods-item">
+                        <img src="./images/goods.png" class="order-detail-goods-pic">
+                        <div class="order-detail-goods-detail">
+                            <p class="title">{{item.productName}}</p>
+                            <p class="number-money">
+                                <span class="goods-num">× {{item.productCount}}</span>
+                                <span class="goods-price">
+                                    <i class="money-icon black">￥</i>
+                                    <i class="money-number black">{{item.price}}</i>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="ticket-print-wrapper">
+                    <div class="is-in-shop">
+                        <div class="checkbox-wrapper">
+                            <div class="checkbox-inner"></div>
+                        </div>
+                        <span class="check-titl">{{orderDetailOnline.giveWay == 0 ? '外送' : '自取'}}</span>
+                    </div>
+                    <div class="right-calculator">
+                        <p class="calculator-title">合计</p>
+                        <span class="goods-price">
+                            <i class="money-icon blue">￥</i>
+                            <i class="money-number blue">{{orderDetailOnline.orderAmount}}</i>
+                        </span>
+                        <button class="print-action pointer" @click="printTick">打印小票</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 线下订单 -->
+        <div v-show="currentIndex == 2" class="main-content">
+            <div class="operation-wrapper">
+                <ul class="tab-wrapper">
+                    <li @click="switchOfflineTab(0)" :class="{active:offlineCurrentIndex == 0}"
+                        class="tab-item pointer">
+                        未支付</li>
+                    <li @click="switchOfflineTab(1)" :class="{active:offlineCurrentIndex == 1}"
+                        class="tab-item pointer">
+                        已支付</li>
+                </ul>
+                <div class="order-list-wrapper">
+                    <ul v-show="offlineCurrentIndex == 0" class="accept-wrapper">
+                        <li @click="getOrderDetailOffline(0,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 0})"
+                            class="order-item pointer"
+                            :class="{active:currentOrderOffline == item.orderCode && offlineCurrentIndex == 0}">
+                            <img src="./images/goods.png" class="order-goods-pic">
+                            <div class="order-detail">
+                                <p class="order-number">单号：{{item.orderCode}}</p>
+                                <p class="order-date">{{item.createTime}}</p>
+                            </div>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
+                        </li>
+                    </ul>
+                    <ul v-show="offlineCurrentIndex == 1" class="accept-wrapper">
+                        <li @click="getOrderDetailOffline(1,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 1})"
+                            class="order-item pointer"
+                            :class="{active:currentOrderOffline == item.orderCode && offlineCurrentIndex == 1}">
+                            <img src="./images/goods.png" class="order-goods-pic">
+                            <div class="order-detail">
+                                <p class="order-number">单号：{{item.orderCode}}</p>
+                                <p class="order-date">{{item.createTime}}</p>
+                            </div>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div v-show="orderDetailOffline.orderCode != -1" class="order-detail-wrapper">
+                <!-- 倒三角 -->
+                <div class="triangle"></div>
+                <ul class="order-detail-goods-list-wrapper offline">
+                    <li v-for="n in 30" class="order-detail-goods-item">
+                        <img src="./images/goods.png" class="order-detail-goods-pic">
+                        <div class="order-detail-goods-detail">
+                            <p class="title">小泰芒500g</p>
+                            <p class="number-money">
+                                <span class="goods-num">× 1</span>
+                                <span class="goods-price">
+                                    <i class="money-icon black">￥</i>
+                                    <i class="money-number black">18</i>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="ticket-print-wrapper offline">
+                    <div class="right-calculator">
+                        <p class="calculator-title">实付</p>
+                        <span class="goods-price">
+                            <i class="money-icon blue">￥</i>
+                            <i class="money-number blue">18</i>
+                        </span>
+                        <button @click="showDialog(2)" class="print-action pointer">查看付款码</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-show="currentIndex == 3" class="main-content">
+
+        </div>
+        <!-- dialog -->
+        <div class="dialog-wrapper" :class="{active:isShowDialog}">
+            <div class="dialog-mask"></div>
+            <div class="dialog-main-content" :class="{active:isShowDialog,medium:dialogIndex == 3 || dialogIndex == 4}">
+                <div class="dialog-title-wrapper">
+                    <p class="dialog-title">{{dialogTitle}}</p>
+                    <button @click="closeDialog" class="dialog-close pointer">×</button>
+                </div>
+                <!-- 挂单 -->
+                <div v-show="dialogIndex == 0" class="order-list-wrapper dialog">
+                    <div class="order-list-left">
+                        <p class="order-list-title">挂单列表</p>
+                        <ul class="order-list">
+                            <li @click="getOrderDetailDialog(n)" v-for="n in 20" class="order-item dialog pointer"
+                                :class="{active:currentOrderDialog == n}">
+                                <p class="order-number dialog">单号：12365425</p>
+                                <p class="order-time dialog">2019-05-13 12:22:22</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="order-list-right">
+                        <!-- 倒三角 -->
+                        <div class="triangle deep"></div>
+                        <ul class="order-detail-goods-list-wrapper dialog">
+                            <li v-for="n in 30" class="order-detail-goods-item dialog">
+                                <img src="./images/goods.png" class="order-detail-goods-pic">
+                                <div class="order-detail-goods-detail">
+                                    <p class="title">小泰芒500g</p>
+                                    <div class="number-money">
+                                        <span class="goods-total-weight">重量：1kg</span>
+                                        <p class="price-and-weight">
+                                            <span class="single-price">
+                                                ¥ 13/500g
+                                            </span>
+                                            <span class="goods-price">
+                                                <i class="money-icon black">￥</i>
+                                                <i class="money-number black">18</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="order-operation">
+                            <button class="delete-order pointer nowrap">删除</button>
+                            <button @click="showDialog(1)" class="next pointer nowrap">继续</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 结算 -->
+                <div v-show="dialogIndex == 1" class="order-list-wrapper dialog">
+                    <div class="order-list-left calculator">
+                        <div class="order-total-money-wrapper">
+                            <p class="total-money-title">订单总额</p>
+                            <div class="total-money">30.00</div>
+                        </div>
+                        <div class="order-info-wrapper">
+                            <p class="order-info title">基本信息</p>
+                            <div class="order-info wrapper">
+                                <p class="order-info number">订单号：123654</p>
+                                <p class="order-info deal-pay">处理方式：线下订单</p>
+                            </div>
+                        </div>
+                        <button @click="showDialog(2)" class="go-cash pointer">结算</button>
+                    </div>
+                    <div class="order-list-right calculator">
+                        <ul class="order-detail-goods-list-wrapper dialog">
+                            <li v-for="n in 30" class="order-detail-goods-item dialog">
+                                <img src="./images/goods.png" class="order-detail-goods-pic">
+                                <div class="order-detail-goods-detail">
+                                    <p class="title">小泰芒500g</p>
+                                    <div class="number-money">
+                                        <span class="goods-total-weight">重量：1kg</span>
+                                        <p class="price-and-weight">
+                                            <span class="single-price">
+                                                ¥ 13/500g
+                                            </span>
+                                            <span class="goods-price">
+                                                <i class="money-icon black">￥</i>
+                                                <i class="money-number black">18</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 扫码 -->
+                <div v-show="dialogIndex == 2" class="order-list-wrapper dialog column">
+                    <div class="qrcode-wrapper">
+                        <div class="qrcode-wrapper-item">
+                            <div class="qrcode-show-wrapper">
+                                <div class="corner left top"></div>
+                                <div class="corner left bottom"></div>
+                                <div class="corner right top"></div>
+                                <div class="corner right bottom"></div>
+                            </div>
+                            <div class="scan-tips">
+                                <img src="./images/wechat.png" class="scan-icon">
+                                <p class="scan-tips-title">微信扫一扫</p>
+                            </div>
+                        </div>
+                        <div class="qrcode-wrapper-item">
+                            <div class="qrcode-show-wrapper">
+                                <div class="corner left top"></div>
+                                <div class="corner left bottom"></div>
+                                <div class="corner right top"></div>
+                                <div class="corner right bottom"></div>
+                            </div>
+                            <div class="scan-tips">
+                                <img src="./images/alipay.png" class="scan-icon">
+                                <p class="scan-tips-title">支付宝扫一扫</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="total-money-wrapper">
+                        <button class="total-money dialog">
+                            <span class="money">￥26.00</span>
+                            <span class="money-tips">总额</span>
+                        </button>
+                        <p class="show-order-number">订单号：123654</p>
+                    </div>
+                </div>
+                <!-- 非水果商品 -->
+                <div v-show="dialogIndex == 3" class="order-list-wrapper dialog column white">
+                    <div class="input-wrapper">
+                        <div class="input-item">
+                            <label class="input-title">单价：</label>
+                            <input type="number" class="input-content">
+                        </div>
+                        <div class="input-item">
+                            <label class="input-title">数量：</label>
+                            <input type="text" class="input-content">
+                        </div>
+                    </div>
+                    <button class="confirm">确定</button>
+                </div>
+                <!-- 设置 -->
+                <div v-show="dialogIndex == 4" class="order-list-wrapper dialog column white">
+                    <div class="open-fruit-distinguish-wrapper">
+                        <p class="distinguish-title">是否开启水果识别</p>
+                        <div @click="toggleOpen" class="switch-wrapper pointer" :class="{active:isOpen}">
+                            <div class="switch-dot" :class="{active:isOpen}"></div>
+                        </div>
+                    </div>
+                    <button @click="saveSwitch" class="save-open pointer">保存</button>
+                </div>
+            </div>
+        </div>
+        <!-- video-player -->
+        <video ref="videoPlayer" width="480" height="320" style="display: none;"></video>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="./js/qs.min.js"></script>
+    <script src="./js/axios.min.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
