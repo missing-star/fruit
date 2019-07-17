@@ -605,7 +605,7 @@ new Vue({
                         vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOnline.length != 0) {
                             vm.orderDetailOnline = vm.orderListOnline[0];
-                            vm.currentOrder = vm.orderDetailOnline.id;
+                            vm.currentOrder = vm.getOrderDetail.id;
                         }
                     }
                 } else {

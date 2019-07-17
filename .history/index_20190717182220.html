@@ -106,7 +106,7 @@
                 <div class="order-list-wrapper">
                     <ul v-show="onlineCurrentIndex == 0" class="accept-wrapper">
                         <li @click="getOrderDetail(0,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 0})"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 0})"
                             class="order-item pointer"
                             :class="{active:currentOrder == item.id && onlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
@@ -118,10 +118,10 @@
                         </li>
                     </ul>
                     <ul v-show="onlineCurrentIndex == 1" class="accept-wrapper">
-                        <li @click="getOrderDetail(1,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 1})"
+                        <li @click="getOrderDetail(1,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 1})"
                             class="order-item pointer"
-                            :class="{active:currentOrder == item.id && onlineCurrentIndex == 1}">
+                            :class="{active:currentOrder == item.orderCode && onlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
@@ -149,7 +149,7 @@
                     </div>
                 </div>
                 <ul class="order-detail-goods-list-wrapper">
-                    <li :key="item.id" v-for="item in orderDetailOnline.orderDetailList"
+                    <li :key="item.productCode" v-for="item in orderDetailOnline.orderDetailList"
                         class="order-detail-goods-item">
                         <img src="./images/goods.png" class="order-detail-goods-pic">
                         <div class="order-detail-goods-detail">
@@ -196,7 +196,7 @@
                 <div class="order-list-wrapper">
                     <ul v-show="offlineCurrentIndex == 0" class="accept-wrapper">
                         <li @click="getOrderDetailOffline(0,item.id)" :key="item.id"
-                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 'noPay'})"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.status == 'noPay'})"
                             class="order-item pointer"
                             :class="{active:currentOrderOffline == item.id && offlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
@@ -204,7 +204,7 @@
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
+                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOnline.transWay == 1 ? (orderDetailOnline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
                         </li>
                     </ul>
                     <ul v-show="offlineCurrentIndex == 1" class="accept-wrapper">
@@ -217,7 +217,7 @@
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
+                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOnline.transWay == 1 ? (orderDetailOnline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
                         </li>
                     </ul>
                 </div>

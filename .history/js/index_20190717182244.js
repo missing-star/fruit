@@ -596,6 +596,7 @@ new Vue({
                         vm.orderListOffline = vm.orderListOffline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOffline.length != 0) {
                             vm.orderDetailOffline = vm.orderListOffline[0];
+                            console.log(vm.orderDetailOffline)
                             vm.currentOrderOffline = vm.orderDetailOffline.id;
                         }
                     } else {
@@ -605,7 +606,6 @@ new Vue({
                         vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOnline.length != 0) {
                             vm.orderDetailOnline = vm.orderListOnline[0];
-                            vm.currentOrder = vm.orderDetailOnline.id;
                         }
                     }
                 } else {

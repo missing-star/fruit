@@ -106,7 +106,7 @@
                 <div class="order-list-wrapper">
                     <ul v-show="onlineCurrentIndex == 0" class="accept-wrapper">
                         <li @click="getOrderDetail(0,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 0})"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 0})"
                             class="order-item pointer"
                             :class="{active:currentOrder == item.id && onlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
@@ -119,7 +119,7 @@
                     </ul>
                     <ul v-show="onlineCurrentIndex == 1" class="accept-wrapper">
                         <li @click="getOrderDetail(1,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 1})"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 1})"
                             class="order-item pointer"
                             :class="{active:currentOrder == item.id && onlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">
@@ -196,7 +196,7 @@
                 <div class="order-list-wrapper">
                     <ul v-show="offlineCurrentIndex == 0" class="accept-wrapper">
                         <li @click="getOrderDetailOffline(0,item.id)" :key="item.id"
-                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 'noPay'})"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.isPrint == 0})"
                             class="order-item pointer"
                             :class="{active:currentOrderOffline == item.id && offlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
@@ -209,7 +209,7 @@
                     </ul>
                     <ul v-show="offlineCurrentIndex == 1" class="accept-wrapper">
                         <li @click="getOrderDetailOffline(1,item.id)" :key="item.id"
-                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus != 'noPay'})"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.isPrint == 1})"
                             class="order-item pointer"
                             :class="{active:currentOrderOffline == item.id && offlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">

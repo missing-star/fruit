@@ -144,7 +144,7 @@ new Vue({
                 this.onlineCurrentIndex = onlineCurrentIndex;
                 this.currentOrderId = currentOrderId;
                 this.orderDetailOnline = this.orderListOnline.filter(function(item) {
-                    return item.id == currentOrderId;
+                    return item.orderCode == currentOrderId;
                 });
             }
         },
@@ -154,11 +154,11 @@ new Vue({
          * @param {number} currentOrder 
          */
         getOrderDetailOffline: function (offlineCurrentIndex, currentOrderId) {
-            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrderId != this.currentOrderOffline) {
+            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrderId != this.currentOrderIdOffline) {
                 this.offlineCurrentIndex = offlineCurrentIndex;
-                this.currentOrderOffline = currentOrderId;
-                this.orderDetailOffline = this.orderListOffline.find(function(item) {
-                    return item.id == currentOrderId;
+                this.currentOrderIdOffline = currentOrderId;
+                this.orderDetailOffline = this.orderListOffline.filter(function(item) {
+                    return item.orderCode == currentOrderId;
                 });
             }
         },
@@ -596,7 +596,6 @@ new Vue({
                         vm.orderListOffline = vm.orderListOffline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOffline.length != 0) {
                             vm.orderDetailOffline = vm.orderListOffline[0];
-                            vm.currentOrderOffline = vm.orderDetailOffline.id;
                         }
                     } else {
                         if (vm.orderListOnlinePage == 1) {
@@ -605,7 +604,6 @@ new Vue({
                         vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOnline.length != 0) {
                             vm.orderDetailOnline = vm.orderListOnline[0];
-                            vm.currentOrder = vm.orderDetailOnline.id;
                         }
                     }
                 } else {
@@ -669,7 +667,7 @@ new Vue({
             vm.getCurrentTime();
         }, 1000);
         //监测秤的重量变化
-        // vm.getWeight();
+        vm.getWeight();
         vm.login();
         vm.getCategoryList();
         // 展示挂单列表

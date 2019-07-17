@@ -289,7 +289,6 @@ button.go-order.pointer {
 ul.goods-category-wrapper {
     height: 100%;
     overflow: auto;
-    background: #EAEFF1;
 }
 
 .goods-choice-wrapper {
@@ -577,7 +576,7 @@ img.order-detail-goods-pic {
 
 li.order-detail-goods-item {
     width: 45%;
-    margin: 2.5%;
+    margin: 2.5% 0;
     margin-bottom: 0;
     height: 6rem;
     border: 2px solid #C8DDE5;

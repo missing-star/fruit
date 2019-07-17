@@ -6,7 +6,7 @@ new Vue({
         subCurrentIndex: 0,
         onlineCurrentIndex: 0,
         offlineCurrentIndex: 0,
-        currentOrderId: 1,
+        currentOrder: 1,
         currentOrderOffline: 1,
         currentOrderDialog: -1,
         isShowDialog: false,
@@ -139,13 +139,10 @@ new Vue({
          * @param {number} onlineCurrentIndex 
          * @param {number} currentOrder 
          */
-        getOrderDetail: function (onlineCurrentIndex, currentOrderId) {
-            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrderId != this.currentOrderId) {
+        getOrderDetail: function (onlineCurrentIndex, currentOrder) {
+            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
                 this.onlineCurrentIndex = onlineCurrentIndex;
-                this.currentOrderId = currentOrderId;
-                this.orderDetailOnline = this.orderListOnline.filter(function(item) {
-                    return item.id == currentOrderId;
-                });
+                this.currentOrder = currentOrder;
             }
         },
         /**
@@ -153,13 +150,10 @@ new Vue({
          * @param {number} onlineCurrentIndex 
          * @param {number} currentOrder 
          */
-        getOrderDetailOffline: function (offlineCurrentIndex, currentOrderId) {
-            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrderId != this.currentOrderOffline) {
+        getOrderDetailOffline: function (offlineCurrentIndex, currentOrder) {
+            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrder != this.currentOrderOffline) {
                 this.offlineCurrentIndex = offlineCurrentIndex;
-                this.currentOrderOffline = currentOrderId;
-                this.orderDetailOffline = this.orderListOffline.find(function(item) {
-                    return item.id == currentOrderId;
-                });
+                this.currentOrderOffline = currentOrder;
             }
         },
         /**
@@ -331,12 +325,6 @@ new Vue({
                             })).then(function (res) {
                                 if (res.data.successFlag == 0) {
                                     // 提交订单成功，从本地挂单列表中删除
-                                    vm.storeList = vm.storeList.filter(function (item) {
-                                        return item.orderNum != vm.currentOrderDialog;
-                                    });
-                                    vm.storeListDetail = {};
-                                    vm.currentOrderDialog = -1;
-                                    localStorage.setItem('storeList', JSON.stringify(vm.storeList));
                                 } else {
                                     alert('提交订单失败');
                                 }
@@ -596,7 +584,6 @@ new Vue({
                         vm.orderListOffline = vm.orderListOffline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOffline.length != 0) {
                             vm.orderDetailOffline = vm.orderListOffline[0];
-                            vm.currentOrderOffline = vm.orderDetailOffline.id;
                         }
                     } else {
                         if (vm.orderListOnlinePage == 1) {
@@ -605,7 +592,6 @@ new Vue({
                         vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOnline.length != 0) {
                             vm.orderDetailOnline = vm.orderListOnline[0];
-                            vm.currentOrder = vm.orderDetailOnline.id;
                         }
                     }
                 } else {

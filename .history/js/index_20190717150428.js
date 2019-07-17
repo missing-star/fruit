@@ -6,7 +6,7 @@ new Vue({
         subCurrentIndex: 0,
         onlineCurrentIndex: 0,
         offlineCurrentIndex: 0,
-        currentOrderId: 1,
+        currentOrder: 1,
         currentOrderOffline: 1,
         currentOrderDialog: -1,
         isShowDialog: false,
@@ -54,15 +54,12 @@ new Vue({
         // 当前选择的水果
         currentSelectedFruit: {
             id: '',
-            productCode: '',
+            productCode:'',
             pic: '',
             name: '',
             price: ''
         },
-        // 店铺信息
-        shopInfo: {},
-        // 秤是否稳定
-        isSteady: false
+        shopInfo:{}
     },
     methods: {
         /**
@@ -139,13 +136,10 @@ new Vue({
          * @param {number} onlineCurrentIndex 
          * @param {number} currentOrder 
          */
-        getOrderDetail: function (onlineCurrentIndex, currentOrderId) {
-            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrderId != this.currentOrderId) {
+        getOrderDetail: function (onlineCurrentIndex, currentOrder) {
+            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
                 this.onlineCurrentIndex = onlineCurrentIndex;
-                this.currentOrderId = currentOrderId;
-                this.orderDetailOnline = this.orderListOnline.filter(function(item) {
-                    return item.id == currentOrderId;
-                });
+                this.currentOrder = currentOrder;
             }
         },
         /**
@@ -153,13 +147,10 @@ new Vue({
          * @param {number} onlineCurrentIndex 
          * @param {number} currentOrder 
          */
-        getOrderDetailOffline: function (offlineCurrentIndex, currentOrderId) {
-            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrderId != this.currentOrderOffline) {
+        getOrderDetailOffline: function (offlineCurrentIndex, currentOrder) {
+            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrder != this.currentOrderOffline) {
                 this.offlineCurrentIndex = offlineCurrentIndex;
-                this.currentOrderOffline = currentOrderId;
-                this.orderDetailOffline = this.orderListOffline.find(function(item) {
-                    return item.id == currentOrderId;
-                });
+                this.currentOrderOffline = currentOrder;
             }
         },
         /**
@@ -177,14 +168,14 @@ new Vue({
         /**
          * 选择了商品
          */
-        startCalculate: function (id, productCode, pic, name, price) {
+        startCalculate: function (id, productCode,pic, name, price) {
             if (id != this.currentSelectedFruit.id) {
                 this.currentSelectedFruit.id = id;
                 this.currentSelectedFruit.productCode = productCode;
                 this.currentSelectedFruit.pic = pic;
                 this.currentSelectedFruit.name = name;
                 this.currentSelectedFruit.price = price;
-                if (this.isSteady) {
+                if(this.isSteady) {
                     this.calculatePrice();
                 }
             }
@@ -218,14 +209,13 @@ new Vue({
             var vm = this;
             vm.calculateGoodsList.push({
                 id: new Date().getTime(),
-                productCode: vm.currentSelectedFruit.productCode,
+                productCode:vm.currentSelectedFruit.productCode,
                 pic: vm.currentSelectedFruit.pic,
                 name: vm.currentSelectedFruit.name,
                 price: vm.currentSelectedFruit.price,
                 weight: vm.preFruitWeight,
                 totalPrice: parseFloat(vm.currentSelectedFruit.price * vm.preFruitWeight).toFixed(2)
             });
-            vm.isSteady = false;
         },
         /**
          * 删除结算区商品
@@ -264,6 +254,7 @@ new Vue({
         setSwitch: function () {
             if (localStorage.getItem('isOpen')) {
                 this.isOpen = localStorage.getItem('isOpen') == 'false' ? false : true;
+                this.log(this.isOpen)
             } else {
                 localStorage.setItem('isOpen', false);
             }
@@ -310,45 +301,24 @@ new Vue({
                     break;
                 case 2:
                     // 提交订单，生成二维码
-                    await axios.post('rpcShop/getOrderCode').then(function (res) {
-                        return res;
-                    }).then(function (res) {
-                        if (res.data.successFlag == 0) {
-                            axios.post('rpcShop/makeUnderShopOrder', vm.stringifyParams({
-                                shopCode: vm.shopInfo.shopCode,
-                                shopName: vm.shopInfo.shopName,
-                                shopHeadUrl: vm.shopInfo.headUrl,
-                                orderCode: res.data.responseObject.data,
-                                orderDetailList: vm.storeListDetail.list.map(function (item) {
-                                    return {
-                                        productCode: item.productCode,
-                                        productName: item.name,
-                                        url: item.pic,
-                                        price: item.price,
-                                        productCount: 1
-                                    }
-                                })
-                            })).then(function (res) {
-                                if (res.data.successFlag == 0) {
-                                    // 提交订单成功，从本地挂单列表中删除
-                                    vm.storeList = vm.storeList.filter(function (item) {
-                                        return item.orderNum != vm.currentOrderDialog;
-                                    });
-                                    vm.storeListDetail = {};
-                                    vm.currentOrderDialog = -1;
-                                    localStorage.setItem('storeList', JSON.stringify(vm.storeList));
-                                } else {
-                                    alert('提交订单失败');
-                                }
-                            }).catch(function (err) {
-                                vm.log(err);
-                            });
-                        } else {
-                            alert('生成订单失败');
-                        }
-                    }).catch(function (err) {
+                    await axios.post('rpcShop/makeUnderShopOrder',this.stringifyParams({
+                        shopCode:vm.shopInfo.shopCode,
+                        shopName:vm.shopInfo.shopName,
+                        shopHeadUrl:vm.shopInfo.headUrl,
+                        orederDetailList:this.storeListDetail.list.map(function(item) {
+                            return {
+                                productCode:item.productCode,
+                                productName:item.name,
+                                url:item.pic,
+                                price:item.price,
+                                productCount:1
+                            }
+                        })
+                    })).then(function(res) {
+                        
+                    }).catch(function(err) {
                         vm.log(err);
-                    })
+                    });
                     this.dialogTitle = '结算';
                     break;
                 case 3:
@@ -477,7 +447,6 @@ new Vue({
                     if (data.data.IsSteady == 1 && data.data.Weight > 0 &&
                         (data.data.Weight.toFixed(2) != vm.preFruitWeight || vm.isChangeFruit)) {
                         // 已经稳定
-                        vm.isSteady = true;
                         vm.preFruitWeight = data.data.Weight.toFixed(2);
                         vm.isChangeFruit = false;
                         vm.scanFruit();
@@ -588,28 +557,22 @@ new Vue({
                 orderStatus: 0,
                 transWayIndex: type
             })).then(function (res) {
-                if (res.data.successFlag == 0) {
-                    if (type == 0) {
-                        if (vm.orderListOfflinePage == 1) {
-                            vm.orderListOffline = [];
-                        }
-                        vm.orderListOffline = vm.orderListOffline.concat(res.data.responseObject.data.data);
-                        if (vm.orderListOffline.length != 0) {
-                            vm.orderDetailOffline = vm.orderListOffline[0];
-                            vm.currentOrderOffline = vm.orderDetailOffline.id;
-                        }
-                    } else {
-                        if (vm.orderListOnlinePage == 1) {
-                            vm.orderListOnline = [];
-                        }
-                        vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
-                        if (vm.orderListOnline.length != 0) {
-                            vm.orderDetailOnline = vm.orderListOnline[0];
-                            vm.currentOrder = vm.orderDetailOnline.id;
-                        }
+                if (type == 0) {
+                    if (vm.orderListOfflinePage == 1) {
+                        vm.orderListOffline = [];
+                    }
+                    vm.orderListOffline = vm.orderListOffline.concat(res.data.responseObject.data.data);
+                    if (vm.orderListOffline.length != 0) {
+                        vm.orderDetailOffline = vm.orderListOffline[0];
                     }
                 } else {
-                    alert('获取订单列表失败');
+                    if (vm.orderListOnlinePage == 1) {
+                        vm.orderListOnline = [];
+                    }
+                    vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
+                    if (vm.orderListOnline.length != 0) {
+                        vm.orderDetailOnline = vm.orderListOnline[0];
+                    }
                 }
             }).catch(function (err) {
                 vm.log(err);
@@ -622,13 +585,6 @@ new Vue({
          */
         toast: function (type, msg) {
             var template = '<div class="toast-wrapper"><p.></p></div>'
-        },
-        /**
-         * 图片加载失败触发
-         * @param {event} e 
-         */
-        onImgError: function (e) {
-            e.target.src = '../images/goods.png';
         }
     },
     computed: {
@@ -641,6 +597,9 @@ new Vue({
         }
     },
     filters: {
+        filterImg: function (src) {
+
+        },
         filterTime: function (timestamp) {
             var date = new Date(timestamp);
             var year = date.getFullYear();
@@ -650,14 +609,6 @@ new Vue({
             var minute = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
             var second = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
             return year + '-' + month + '-' + day + ' ' + hour + ' : ' + minute + ' : ' + second;
-        }
-    },
-    watch:{
-        calculateGoodsList:function() {
-            var vm = this;
-            vm.$nextTick(function() {
-                vm.$refs.calculater.scrollTop = vm.$refs.calculater.scrollHeight;
-            });
         }
     },
     created: function () {
@@ -674,5 +625,6 @@ new Vue({
         vm.getCategoryList();
         // 展示挂单列表
         this.getStoreList();
+        console.log(vm.storeList)
     }
 });

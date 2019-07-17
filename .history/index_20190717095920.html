@@ -35,11 +35,11 @@
         <!-- 结算区 -->
         <div v-show="currentIndex == 0" class="main-content">
             <div class="operation-wrapper">
-                <ul class="goods-list-wrapper" ref="calculater">
+                <ul class="goods-list-wrapper">
                     <li :key="item.id" v-for="item in calculateGoodsList" class="goods-item">
                         <div class="goods-pic-wrapper">
                             <span @click="deleteGoods(item.id)" class="delete-icon pointer"></span>
-                            <img :src="item.pic" class="goods-pic" @error="onImgError($event)">
+                            <img :src="item.pic" class="goods-pic">
                         </div>
                         <div class="goods-detail">
                             <p class="goods-title">{{item.name}}</p>
@@ -70,7 +70,7 @@
                             <button @click="showDialog(0)" class="order-list pointer">挂单列表</button>
                             <button @click="setStoreList" class="go-order pointer">挂单</button>
                         </div>
-                        <button @click="showDialog(1,true)" class="right-part pointer">
+                        <button @click="showDialog(1)" class="right-part pointer">
                             结算
                         </button>
                     </div>
@@ -84,8 +84,8 @@
                     </li>
                 </ul>
                 <ul class="goods-choice-list">
-                    <li :class="{active:item.id == currentSelectedFruit.id}" @click="startCalculate(item.id,item.productCode,item.productPic1,item.productName,item.productPrice)" :key="item.id" v-for="item in goodsList" class="goods-choice-item pointer">
-                        <img :src="item.productPic1" class="goods-show-pic" @error="onImgError($event)">
+                    <li @click="startGetWeight(item.productPic1,item.productName,item.productPrice)" :key="item.id" v-for="item in goodsList" class="goods-choice-item pointer">
+                        <img :src="item.productPic1" class="goods-show-pic">
                         <p class="goods-desc">
                             <span class="goods-name">{{item.productName}}</span>
                             <span class="price-weight">{{item.productPrice}}元 / kg</span>
@@ -99,35 +99,35 @@
             <div class="operation-wrapper">
                 <ul class="tab-wrapper">
                     <li @click="switchOnlineTab(0)" :class="{active:onlineCurrentIndex == 0}" class="tab-item pointer">
-                        未打印</li>
+                        未接单</li>
                     <li @click="switchOnlineTab(1)" :class="{active:onlineCurrentIndex == 1}" class="tab-item pointer">
-                        已打印</li>
+                        已接单</li>
                 </ul>
                 <div class="order-list-wrapper">
                     <ul v-show="onlineCurrentIndex == 0" class="accept-wrapper">
-                        <li @click="getOrderDetail(0,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 0})"
+                        <li @click="getOrderDetail(0,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 0})"
                             class="order-item pointer"
-                            :class="{active:currentOrder == item.id && onlineCurrentIndex == 0}">
+                            :class="{active:currentOrder == item.orderCode && onlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.giveWay == 0 ? '商家配送' : '第三方配送'}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                     <ul v-show="onlineCurrentIndex == 1" class="accept-wrapper">
-                        <li @click="getOrderDetail(1,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 1})"
+                        <li @click="getOrderDetail(1,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 1})"
                             class="order-item pointer"
-                            :class="{active:currentOrder == item.id && onlineCurrentIndex == 1}">
+                            :class="{active:currentOrder == item.orderCode && onlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.giveWay == 0 ? '商家配送' : '第三方配送'}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                 </div>
@@ -149,7 +149,7 @@
                     </div>
                 </div>
                 <ul class="order-detail-goods-list-wrapper">
-                    <li :key="item.id" v-for="item in orderDetailOnline.orderDetailList"
+                    <li :key="item.productCode" v-for="item in orderDetailOnline.orderDetailList"
                         class="order-detail-goods-item">
                         <img src="./images/goods.png" class="order-detail-goods-pic">
                         <div class="order-detail-goods-detail">
@@ -169,7 +169,7 @@
                         <div class="checkbox-wrapper">
                             <div class="checkbox-inner"></div>
                         </div>
-                        <span class="check-titl">{{orderDetailOnline.transWay == 2 ? '自取' : (orderDetailOnline.transWay == 1 ? (orderDetailOnline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</span>
+                        <span class="check-titl">{{orderDetailOnline.giveWay == 0 ? '外送' : '自取'}}</span>
                     </div>
                     <div class="right-calculator">
                         <p class="calculator-title">合计</p>
@@ -195,29 +195,29 @@
                 </ul>
                 <div class="order-list-wrapper">
                     <ul v-show="offlineCurrentIndex == 0" class="accept-wrapper">
-                        <li @click="getOrderDetailOffline(0,item.id)" :key="item.id"
-                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 'noPay'})"
+                        <li @click="getOrderDetailOffline(0,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 0})"
                             class="order-item pointer"
-                            :class="{active:currentOrderOffline == item.id && offlineCurrentIndex == 0}">
+                            :class="{active:currentOrderOffline == item.orderCode && offlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                     <ul v-show="offlineCurrentIndex == 1" class="accept-wrapper">
-                        <li @click="getOrderDetailOffline(1,item.id)" :key="item.id"
-                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus != 'noPay'})"
+                        <li @click="getOrderDetailOffline(1,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 1})"
                             class="order-item pointer"
-                            :class="{active:currentOrderOffline == item.id && offlineCurrentIndex == 1}">
+                            :class="{active:currentOrderOffline == item.orderCode && offlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                 </div>
@@ -226,12 +226,12 @@
                 <!-- 倒三角 -->
                 <div class="triangle"></div>
                 <ul class="order-detail-goods-list-wrapper offline">
-                    <li :key="item.id" v-for="item in orderDetailOffline.orderDetailList" class="order-detail-goods-item">
+                    <li v-for="n in 30" class="order-detail-goods-item">
                         <img src="./images/goods.png" class="order-detail-goods-pic">
                         <div class="order-detail-goods-detail">
-                            <p class="title">{{item.productName}}</p>
+                            <p class="title">小泰芒500g</p>
                             <p class="number-money">
-                                <span class="goods-num">× {{item.productCount}}</span>
+                                <span class="goods-num">× 1</span>
                                 <span class="goods-price">
                                     <i class="money-icon black">￥</i>
                                     <i class="money-number black">18</i>
@@ -245,7 +245,7 @@
                         <p class="calculator-title">实付</p>
                         <span class="goods-price">
                             <i class="money-icon blue">￥</i>
-                            <i class="money-number blue">{{orderDetailOffline.orderAmount}}</i>
+                            <i class="money-number blue">18</i>
                         </span>
                         <button @click="showDialog(2)" class="print-action pointer">查看付款码</button>
                     </div>
@@ -280,7 +280,7 @@
                         <div class="triangle deep"></div>
                         <ul class="order-detail-goods-list-wrapper dialog">
                             <li :key="item.orderNum" v-for="item in storeListDetail.list" class="order-detail-goods-item dialog">
-                                <img :src="item.pic" class="order-detail-goods-pic" @error="onImgError($event)">
+                                <img src="./images/goods.png" class="order-detail-goods-pic">
                                 <div class="order-detail-goods-detail">
                                     <p class="title">{{item.name}}</p>
                                     <div class="number-money">

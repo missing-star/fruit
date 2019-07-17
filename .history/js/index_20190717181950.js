@@ -144,7 +144,7 @@ new Vue({
                 this.onlineCurrentIndex = onlineCurrentIndex;
                 this.currentOrderId = currentOrderId;
                 this.orderDetailOnline = this.orderListOnline.filter(function(item) {
-                    return item.id == currentOrderId;
+                    return item.orderCode == currentOrderId;
                 });
             }
         },
@@ -596,7 +596,7 @@ new Vue({
                         vm.orderListOffline = vm.orderListOffline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOffline.length != 0) {
                             vm.orderDetailOffline = vm.orderListOffline[0];
-                            vm.currentOrderOffline = vm.orderDetailOffline.id;
+                            // vm.offlineCurrentIndex = vm.orderDetailOffline.id;
                         }
                     } else {
                         if (vm.orderListOnlinePage == 1) {
@@ -605,7 +605,6 @@ new Vue({
                         vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOnline.length != 0) {
                             vm.orderDetailOnline = vm.orderListOnline[0];
-                            vm.currentOrder = vm.orderDetailOnline.id;
                         }
                     }
                 } else {

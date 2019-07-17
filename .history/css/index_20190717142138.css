@@ -129,7 +129,7 @@ li.goods-item {
 
 img.goods-pic {
     width: 100%;
-    height: 100%;
+    height: auto;
 }
 
 ul.goods-list-wrapper {
@@ -289,7 +289,6 @@ button.go-order.pointer {
 ul.goods-category-wrapper {
     height: 100%;
     overflow: auto;
-    background: #EAEFF1;
 }
 
 .goods-choice-wrapper {
@@ -562,13 +561,12 @@ ul.order-detail-goods-list-wrapper {
     margin-top: 1rem;
     display: flex;
     background: #FFFFFF;
+    flex-direction: column;
 }
 
 ul.order-detail-goods-list-wrapper.offline {
     height: calc(75% + 6rem);
     margin-top: 0;
-    flex-wrap: wrap;
-    align-content: flex-start;
 }
 
 img.order-detail-goods-pic {
@@ -577,7 +575,7 @@ img.order-detail-goods-pic {
 
 li.order-detail-goods-item {
     width: 45%;
-    margin: 2.5%;
+    margin: 2.5% 0;
     margin-bottom: 0;
     height: 6rem;
     border: 2px solid #C8DDE5;
@@ -816,7 +814,6 @@ ul.order-detail-goods-list-wrapper.dialog {
     overflow: auto;
     padding: 2rem;
     padding-top: 0;
-    flex-direction: column;
 }
 .order-operation {
     background: #FFFFFF;
@@ -1101,7 +1098,4 @@ button.save-open.pointer {
 }
 li.goods-choice-item.pointer.active{
     background-image: url(../images/checked.png);
-    background-repeat: no-repeat;
-    background-size: 2rem;
-    background-position: right bottom
 }

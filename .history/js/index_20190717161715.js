@@ -6,7 +6,7 @@ new Vue({
         subCurrentIndex: 0,
         onlineCurrentIndex: 0,
         offlineCurrentIndex: 0,
-        currentOrderId: 1,
+        currentOrder: 1,
         currentOrderOffline: 1,
         currentOrderDialog: -1,
         isShowDialog: false,
@@ -139,13 +139,10 @@ new Vue({
          * @param {number} onlineCurrentIndex 
          * @param {number} currentOrder 
          */
-        getOrderDetail: function (onlineCurrentIndex, currentOrderId) {
-            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrderId != this.currentOrderId) {
+        getOrderDetail: function (onlineCurrentIndex, currentOrder) {
+            if (this.onlineCurrentIndex != onlineCurrentIndex || currentOrder != this.currentOrder) {
                 this.onlineCurrentIndex = onlineCurrentIndex;
-                this.currentOrderId = currentOrderId;
-                this.orderDetailOnline = this.orderListOnline.filter(function(item) {
-                    return item.id == currentOrderId;
-                });
+                this.currentOrder = currentOrder;
             }
         },
         /**
@@ -153,13 +150,10 @@ new Vue({
          * @param {number} onlineCurrentIndex 
          * @param {number} currentOrder 
          */
-        getOrderDetailOffline: function (offlineCurrentIndex, currentOrderId) {
-            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrderId != this.currentOrderOffline) {
+        getOrderDetailOffline: function (offlineCurrentIndex, currentOrder) {
+            if (this.offlineCurrentIndex != offlineCurrentIndex || currentOrder != this.currentOrderOffline) {
                 this.offlineCurrentIndex = offlineCurrentIndex;
-                this.currentOrderOffline = currentOrderId;
-                this.orderDetailOffline = this.orderListOffline.find(function(item) {
-                    return item.id == currentOrderId;
-                });
+                this.currentOrderOffline = currentOrder;
             }
         },
         /**
@@ -184,9 +178,10 @@ new Vue({
                 this.currentSelectedFruit.pic = pic;
                 this.currentSelectedFruit.name = name;
                 this.currentSelectedFruit.price = price;
-                if (this.isSteady) {
-                    this.calculatePrice();
-                }
+                // if (this.isSteady) {
+                //     this.calculatePrice();
+                // }
+                this.calculatePrice();
             }
         },
         /**
@@ -264,6 +259,7 @@ new Vue({
         setSwitch: function () {
             if (localStorage.getItem('isOpen')) {
                 this.isOpen = localStorage.getItem('isOpen') == 'false' ? false : true;
+                this.log(this.isOpen)
             } else {
                 localStorage.setItem('isOpen', false);
             }
@@ -313,12 +309,17 @@ new Vue({
                     await axios.post('rpcShop/getOrderCode').then(function (res) {
                         return res;
                     }).then(function (res) {
-                        if (res.data.successFlag == 0) {
+                        if(res.data.successFlag == 0) {
+
+                        }
+                        else {
+                            alert('生成订单失败');
+                        }
                             axios.post('rpcShop/makeUnderShopOrder', vm.stringifyParams({
                                 shopCode: vm.shopInfo.shopCode,
                                 shopName: vm.shopInfo.shopName,
                                 shopHeadUrl: vm.shopInfo.headUrl,
-                                orderCode: res.data.responseObject.data,
+                                orderCode: res.data.responseObject,
                                 orderDetailList: vm.storeListDetail.list.map(function (item) {
                                     return {
                                         productCode: item.productCode,
@@ -329,23 +330,15 @@ new Vue({
                                     }
                                 })
                             })).then(function (res) {
-                                if (res.data.successFlag == 0) {
-                                    // 提交订单成功，从本地挂单列表中删除
-                                    vm.storeList = vm.storeList.filter(function (item) {
-                                        return item.orderNum != vm.currentOrderDialog;
-                                    });
-                                    vm.storeListDetail = {};
-                                    vm.currentOrderDialog = -1;
-                                    localStorage.setItem('storeList', JSON.stringify(vm.storeList));
-                                } else {
+                                if(res.successFlag == 0) {
+
+                                }
+                                else {
                                     alert('提交订单失败');
                                 }
                             }).catch(function (err) {
                                 vm.log(err);
                             });
-                        } else {
-                            alert('生成订单失败');
-                        }
                     }).catch(function (err) {
                         vm.log(err);
                     })
@@ -596,7 +589,6 @@ new Vue({
                         vm.orderListOffline = vm.orderListOffline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOffline.length != 0) {
                             vm.orderDetailOffline = vm.orderListOffline[0];
-                            vm.currentOrderOffline = vm.orderDetailOffline.id;
                         }
                     } else {
                         if (vm.orderListOnlinePage == 1) {
@@ -605,10 +597,10 @@ new Vue({
                         vm.orderListOnline = vm.orderListOnline.concat(res.data.responseObject.data.data);
                         if (vm.orderListOnline.length != 0) {
                             vm.orderDetailOnline = vm.orderListOnline[0];
-                            vm.currentOrder = vm.orderDetailOnline.id;
                         }
                     }
-                } else {
+                }
+                else {
                     alert('获取订单列表失败');
                 }
             }).catch(function (err) {
@@ -628,6 +620,7 @@ new Vue({
          * @param {event} e 
          */
         onImgError: function (e) {
+            console.log(e);
             e.target.src = '../images/goods.png';
         }
     },
@@ -652,14 +645,6 @@ new Vue({
             return year + '-' + month + '-' + day + ' ' + hour + ' : ' + minute + ' : ' + second;
         }
     },
-    watch:{
-        calculateGoodsList:function() {
-            var vm = this;
-            vm.$nextTick(function() {
-                vm.$refs.calculater.scrollTop = vm.$refs.calculater.scrollHeight;
-            });
-        }
-    },
     created: function () {
         var vm = this;
         vm.setSwitch();
@@ -674,5 +659,6 @@ new Vue({
         vm.getCategoryList();
         // 展示挂单列表
         this.getStoreList();
+        console.log(vm.storeList)
     }
 });

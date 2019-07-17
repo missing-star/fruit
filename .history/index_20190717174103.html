@@ -99,35 +99,35 @@
             <div class="operation-wrapper">
                 <ul class="tab-wrapper">
                     <li @click="switchOnlineTab(0)" :class="{active:onlineCurrentIndex == 0}" class="tab-item pointer">
-                        未打印</li>
+                        未接单</li>
                     <li @click="switchOnlineTab(1)" :class="{active:onlineCurrentIndex == 1}" class="tab-item pointer">
-                        已打印</li>
+                        已接单</li>
                 </ul>
                 <div class="order-list-wrapper">
                     <ul v-show="onlineCurrentIndex == 0" class="accept-wrapper">
-                        <li @click="getOrderDetail(0,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 0})"
+                        <li @click="getOrderDetail(0,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 0})"
                             class="order-item pointer"
-                            :class="{active:currentOrder == item.id && onlineCurrentIndex == 0}">
+                            :class="{active:currentOrder == item.orderCode && onlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.giveWay == 0 ? '商家配送' : '第三方配送'}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                     <ul v-show="onlineCurrentIndex == 1" class="accept-wrapper">
-                        <li @click="getOrderDetail(1,item.id)" :key="item.id"
-                            v-for="item in orderListOnline.filter(function(value,index){return value.isPrint == 1})"
+                        <li @click="getOrderDetail(1,item.orderCode)" :key="item.orderCode"
+                            v-for="item in orderListOnline.filter(function(value,index){return value.orderStatus == 1})"
                             class="order-item pointer"
-                            :class="{active:currentOrder == item.id && onlineCurrentIndex == 1}">
+                            :class="{active:currentOrder == item.orderCode && onlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.giveWay == 0 ? '商家配送' : '第三方配送'}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                 </div>
@@ -149,7 +149,7 @@
                     </div>
                 </div>
                 <ul class="order-detail-goods-list-wrapper">
-                    <li :key="item.id" v-for="item in orderDetailOnline.orderDetailList"
+                    <li :key="item.productCode" v-for="item in orderDetailOnline.orderDetailList"
                         class="order-detail-goods-item">
                         <img src="./images/goods.png" class="order-detail-goods-pic">
                         <div class="order-detail-goods-detail">
@@ -169,7 +169,7 @@
                         <div class="checkbox-wrapper">
                             <div class="checkbox-inner"></div>
                         </div>
-                        <span class="check-titl">{{orderDetailOnline.transWay == 2 ? '自取' : (orderDetailOnline.transWay == 1 ? (orderDetailOnline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</span>
+                        <span class="check-titl">{{orderDetailOnline.giveWay == 0 ? '外送' : '自取'}}</span>
                     </div>
                     <div class="right-calculator">
                         <p class="calculator-title">合计</p>
@@ -195,29 +195,29 @@
                 </ul>
                 <div class="order-list-wrapper">
                     <ul v-show="offlineCurrentIndex == 0" class="accept-wrapper">
-                        <li @click="getOrderDetailOffline(0,item.id)" :key="item.id"
-                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 'noPay'})"
+                        <li @click="getOrderDetailOffline(0,item.orderCode)" :key="item.id"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.status == 'noPay'})"
                             class="order-item pointer"
-                            :class="{active:currentOrderOffline == item.id && offlineCurrentIndex == 0}">
+                            :class="{active:currentOrderOffline == item.orderCode && offlineCurrentIndex == 0}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                     <ul v-show="offlineCurrentIndex == 1" class="accept-wrapper">
-                        <li @click="getOrderDetailOffline(1,item.id)" :key="item.id"
-                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus != 'noPay'})"
+                        <li @click="getOrderDetailOffline(1,item.orderCode)" :key="item.id"
+                            v-for="item in orderListOffline.filter(function(value,index){return value.orderStatus == 'pay'})"
                             class="order-item pointer"
-                            :class="{active:currentOrderOffline == item.id && offlineCurrentIndex == 1}">
+                            :class="{active:currentOrderOffline == item.orderCode && offlineCurrentIndex == 1}">
                             <img src="./images/goods.png" class="order-goods-pic">
                             <div class="order-detail">
                                 <p class="order-number">单号：{{item.orderCode}}</p>
                                 <p class="order-date">{{item.createTime}}</p>
                             </div>
-                            <button class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
+                            <button class="post-way self">{{item.giveWay == 0 ? '外送' : '自取'}}</button>
                         </li>
                     </ul>
                 </div>
@@ -226,7 +226,7 @@
                 <!-- 倒三角 -->
                 <div class="triangle"></div>
                 <ul class="order-detail-goods-list-wrapper offline">
-                    <li :key="item.id" v-for="item in orderDetailOffline.orderDetailList" class="order-detail-goods-item">
+                    <li :key="item.productCode" v-for="item in orderDetailOffline.orderDetailList" class="order-detail-goods-item">
                         <img src="./images/goods.png" class="order-detail-goods-pic">
                         <div class="order-detail-goods-detail">
                             <p class="title">{{item.productName}}</p>
