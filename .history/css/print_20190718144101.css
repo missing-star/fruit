@@ -1,0 +1,11 @@
+*{
+    padding: 0;
+    font-size: 20px;
+    margin: 0;
+}
+body{
+    padding: 50px;
+}
+@page{
+    margin: 0;
+}

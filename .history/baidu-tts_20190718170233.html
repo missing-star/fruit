@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="test" onclick="getAudioByChara()">发送文字</button>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    <script>
+        // x2dRKYT1nMocPcPI3CGyEtxo MivG6Qh2rQI2MvepbqHgXyzltxGgALFd
+
+        var assessToken = '24.d1da6a3ac860fab802ff26caa1cf4cdb.2592000.1566032052.282335-16837413';
+        function getToken() {
+            $.post('https://openapi.baidu.com/oauth/2.0/token', {
+                grant_type: 'client_credentials',
+                client_id: 'x2dRKYT1nMocPcPI3CGyEtxo',
+                client_secret: 'MivG6Qh2rQI2MvepbqHgXyzltxGgALFd'
+            }, function (data) {
+                console.log(data);
+            });
+        }
+
+        function getAudioByChara() {
+            var text = '你好';
+            text = encodeURI(encodeURI(text));
+            window.location.href =
+                'http://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=abcdxxx&tok=1.a6b7dbd428f731035f771b8d****.86400.1292922000-2346678-124328&tex=%e7%99%be%e5%ba%a6%e4%bd%a0%e5%a5%bd&vol=9&per=0&spd=5&pit=5&aue=3';
+        }
+    </script>
+</body>
+
+</html>
