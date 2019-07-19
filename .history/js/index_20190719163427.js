@@ -217,9 +217,10 @@ new Vue({
                 this.currentSelectedFruit.pic = pic;
                 this.currentSelectedFruit.name = name;
                 this.currentSelectedFruit.price = price;
-                if (this.isSteady) {
-                    this.calculatePrice();
-                }
+                // if (this.isSteady) {
+                //     this.calculatePrice();
+                // }
+                this.calculatePrice();
             }
         },
         /**
@@ -425,6 +426,9 @@ new Vue({
                     break;
                 case 2:
                     vm.dialogTitle = '结算';
+                    if (vm.isShowDialog) {
+                        return;
+                    }
                     break;
                 case 3:
                     // 非水果
@@ -440,13 +444,12 @@ new Vue({
         /**
          *提交订单
          */
-        submitOrder: async function (flag) {
+        submitOrder: async function () {
             var vm = this;
             await axios.post('rpcShop/getOrderCode').then(function (res) {
                 return res;
             }).then(function (res) {
                 var orderNo = res.data.responseObject.data;
-                var orderAmount = vm.storeListDetail.totalMoney;
                 if (res.data.successFlag == 0) {
                     axios.post('rpcShop/makeUnderShopOrder', vm.stringifyParams({
                         shopCode: vm.shopInfo.shopCode,
@@ -473,7 +476,7 @@ new Vue({
                             vm.storeListDetail = {};
                             vm.currentOrderDialog = -1;
                             localStorage.setItem('storeList', JSON.stringify(vm.storeList));
-                            vm.getPayQrCode(orderNo,orderAmount,flag);
+                            vm.getPayQrCode(orderNo);
                         } else {
                             vm.toast(false, '提交订单失败');
                         }
@@ -490,11 +493,9 @@ new Vue({
         /**
          * 获得订单支付二维码地址
          */
-        getPayQrCode: function (orderNum, orderAmount,isNotShowDialog) {
+        getPayQrCode: function (orderNum, orderAmount) {
             var vm = this;
-            if(!isNotShowDialog) {
-                vm.showDialog(2);
-            }
+            vm.showDialog(2);
             vm.isShowLoading = true;
             // 获取二维码地址
             axios.post('charge/getPayPic', vm.stringifyParams({
@@ -506,9 +507,6 @@ new Vue({
                     vm.showPayInfo.orderNum = orderNum;
                     vm.showPayInfo.orderAmount = orderAmount == null ? '0.00' : orderAmount;
                     vm.isShowLoading = false;
-                    if(isNotShowDialog) {
-                        vm.showDialog(2);
-                    }
                 }
             }).catch(function (err) {
                 vm.log(err);
@@ -873,26 +871,20 @@ new Vue({
     },
     created: function () {
         var vm = this;
-        // 设置axios基础URL
         axios.defaults.baseURL = 'http://52.83.136.234:15555/qxg';
-        // 当前时间
+        // vm.getText();
+        vm.setSwitch();
         vm.getCurrentTime();
         setInterval(function () {
             vm.getCurrentTime();
         }, 1000);
-        // 登录
-        vm.login();
-        // 查询播报
-        vm.getText();
-        // 设置是否开启自动识别
-        vm.setSwitch();
         //监测秤的重量变化
-        vm.getWeight();
-        // 获取分类列表
+        // vm.getWeight();
+        vm.login();
         vm.getCategoryList();
         // 展示挂单列表
         vm.getStoreList();
-        // 开始监听滚动加载事件
+        // 开始监听
         vm.$nextTick(function () {
             vm.watchScroll(vm.$refs.goodsWrapper, vm.$refs.goodsMore, function () {
                 if (vm.isMoreGoods) {
@@ -913,5 +905,6 @@ new Vue({
                 }
             });
         });
+
     }
 });

@@ -1167,16 +1167,13 @@ img.pay-code {
     border: 1px solid transparent;
     border-radius: 0.25rem;
     padding: 1rem 1.25rem;
-    min-height: 4rem;
-    display: flex;
-    align-items: center;
     position: fixed;
     right: -100%;
     z-index: 6;
     top: 30%;
-    min-width: 30rem;
-    font-size: 1.2rem;
-    transition: right 0.3s ease-in-out;
+    min-width: 20rem;
+    font-size: 1.5rem;
+    transition: right 0.5s ease;
 }
 .toast-wrapper.active{
     right: 1rem;

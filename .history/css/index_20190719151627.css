@@ -1167,29 +1167,29 @@ img.pay-code {
     border: 1px solid transparent;
     border-radius: 0.25rem;
     padding: 1rem 1.25rem;
-    min-height: 4rem;
-    display: flex;
-    align-items: center;
     position: fixed;
     right: -100%;
     z-index: 6;
     top: 30%;
-    min-width: 30rem;
-    font-size: 1.2rem;
-    transition: right 0.3s ease-in-out;
+    min-width: 20rem;
+    font-size: 1.5rem;
+    transition: left 1s ease;
+    visibility: hidden;
 }
 .toast-wrapper.active{
-    right: 1rem;
+    visibility: visible;
 }
 .toast-wrapper.success{
     color: #155724;
     background-color: #d4edda;
     border-color: #c3e6cb;
+    right: 1rem;
 }
 .toast-wrapper.warn{
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
+    right: 1rem;
 }
 
 

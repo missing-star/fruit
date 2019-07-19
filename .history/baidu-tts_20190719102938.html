@@ -29,17 +29,17 @@
         function getAudioByChara() {
             var text = '到账5.2元';
             text = encodeURI(encodeURI(text));
-            $.get('https://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=2C-4D-54-59-59-20&tok=' + accessToken + '&tex=' +
-                text,
-                function (data) {
-                    var file = new Blob([data]);
-                    var fileReader = new FileReader();
-                    fileReader.readAsDataURL(file);
-                    fileReader.onload = function(edge) {
-                        console.log(edge.target.result);
-                    }
-                    console.log(file);
-                });
+
+            var url = 'https://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=2C-4D-54-59-59-20&tok=' + accessToken +
+                '&tex=' + text;
+            var audio = document.createElement("audio")
+            audio.autoplay = "autoplay"
+            var source = document.createElement("source")
+            source.id = "tts_source"
+            source.type = "audio/mpeg"
+            source.src = url
+            audio.appendChild(source)
+            document.body.appendChild(audio);
         }
     </script>
 </body>

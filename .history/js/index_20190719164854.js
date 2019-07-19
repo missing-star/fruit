@@ -217,9 +217,10 @@ new Vue({
                 this.currentSelectedFruit.pic = pic;
                 this.currentSelectedFruit.name = name;
                 this.currentSelectedFruit.price = price;
-                if (this.isSteady) {
-                    this.calculatePrice();
-                }
+                // if (this.isSteady) {
+                //     this.calculatePrice();
+                // }
+                this.calculatePrice();
             }
         },
         /**
@@ -440,13 +441,12 @@ new Vue({
         /**
          *提交订单
          */
-        submitOrder: async function (flag) {
+        submitOrder: async function () {
             var vm = this;
             await axios.post('rpcShop/getOrderCode').then(function (res) {
                 return res;
             }).then(function (res) {
                 var orderNo = res.data.responseObject.data;
-                var orderAmount = vm.storeListDetail.totalMoney;
                 if (res.data.successFlag == 0) {
                     axios.post('rpcShop/makeUnderShopOrder', vm.stringifyParams({
                         shopCode: vm.shopInfo.shopCode,
@@ -473,7 +473,7 @@ new Vue({
                             vm.storeListDetail = {};
                             vm.currentOrderDialog = -1;
                             localStorage.setItem('storeList', JSON.stringify(vm.storeList));
-                            vm.getPayQrCode(orderNo,orderAmount,flag);
+                            vm.getPayQrCode(orderNo);
                         } else {
                             vm.toast(false, '提交订单失败');
                         }
@@ -490,9 +490,9 @@ new Vue({
         /**
          * 获得订单支付二维码地址
          */
-        getPayQrCode: function (orderNum, orderAmount,isNotShowDialog) {
+        getPayQrCode: function (orderNum, orderAmount, isNotShowDialog) {
             var vm = this;
-            if(!isNotShowDialog) {
+            if (!isNotShowDialog) {
                 vm.showDialog(2);
             }
             vm.isShowLoading = true;
@@ -887,7 +887,7 @@ new Vue({
         // 设置是否开启自动识别
         vm.setSwitch();
         //监测秤的重量变化
-        vm.getWeight();
+        // vm.getWeight();
         // 获取分类列表
         vm.getCategoryList();
         // 展示挂单列表

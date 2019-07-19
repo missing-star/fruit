@@ -217,9 +217,10 @@ new Vue({
                 this.currentSelectedFruit.pic = pic;
                 this.currentSelectedFruit.name = name;
                 this.currentSelectedFruit.price = price;
-                if (this.isSteady) {
-                    this.calculatePrice();
-                }
+                // if (this.isSteady) {
+                //     this.calculatePrice();
+                // }
+                this.calculatePrice();
             }
         },
         /**
@@ -446,7 +447,6 @@ new Vue({
                 return res;
             }).then(function (res) {
                 var orderNo = res.data.responseObject.data;
-                var orderAmount = vm.storeListDetail.totalMoney;
                 if (res.data.successFlag == 0) {
                     axios.post('rpcShop/makeUnderShopOrder', vm.stringifyParams({
                         shopCode: vm.shopInfo.shopCode,
@@ -473,7 +473,7 @@ new Vue({
                             vm.storeListDetail = {};
                             vm.currentOrderDialog = -1;
                             localStorage.setItem('storeList', JSON.stringify(vm.storeList));
-                            vm.getPayQrCode(orderNo,orderAmount,flag);
+                            vm.getPayQrCode(orderNo,vm.storeListDetail.totalMoney,flag);
                         } else {
                             vm.toast(false, '提交订单失败');
                         }

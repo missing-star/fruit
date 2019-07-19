@@ -217,9 +217,10 @@ new Vue({
                 this.currentSelectedFruit.pic = pic;
                 this.currentSelectedFruit.name = name;
                 this.currentSelectedFruit.price = price;
-                if (this.isSteady) {
-                    this.calculatePrice();
-                }
+                // if (this.isSteady) {
+                //     this.calculatePrice();
+                // }
+                this.calculatePrice();
             }
         },
         /**
@@ -263,8 +264,8 @@ new Vue({
                 pic: vm.currentSelectedFruit.pic,
                 name: vm.currentSelectedFruit.name,
                 price: vm.currentSelectedFruit.price,
-                weight: vm.preFruitWeight,
-                totalPrice: parseFloat(vm.currentSelectedFruit.price * vm.preFruitWeight).toFixed(2)
+                weight: 10,
+                totalPrice: parseFloat(vm.currentSelectedFruit.price * 10).toFixed(2)
             });
             vm.isSteady = false;
         },
@@ -446,7 +447,6 @@ new Vue({
                 return res;
             }).then(function (res) {
                 var orderNo = res.data.responseObject.data;
-                var orderAmount = vm.storeListDetail.totalMoney;
                 if (res.data.successFlag == 0) {
                     axios.post('rpcShop/makeUnderShopOrder', vm.stringifyParams({
                         shopCode: vm.shopInfo.shopCode,
@@ -473,7 +473,7 @@ new Vue({
                             vm.storeListDetail = {};
                             vm.currentOrderDialog = -1;
                             localStorage.setItem('storeList', JSON.stringify(vm.storeList));
-                            vm.getPayQrCode(orderNo,orderAmount,flag);
+                            vm.getPayQrCode(orderNo,vm.storeListDetail.totalMoney,flag);
                         } else {
                             vm.toast(false, '提交订单失败');
                         }
@@ -848,11 +848,13 @@ new Vue({
             this.calculateGoodsList.forEach(function (item) {
                 money += parseFloat(item.totalPrice);
             });
+            console.log(money);
             return parseFloat(money).toFixed(2);
         }
     },
     filters: {
         filterTime: function (timestamp) {
+            console.log(timestamp);
             var date = new Date(timestamp);
             var year = date.getFullYear();
             var month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
@@ -883,7 +885,7 @@ new Vue({
         // 登录
         vm.login();
         // 查询播报
-        vm.getText();
+        // vm.getText();
         // 设置是否开启自动识别
         vm.setSwitch();
         //监测秤的重量变化

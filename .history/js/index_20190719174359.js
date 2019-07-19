@@ -217,9 +217,10 @@ new Vue({
                 this.currentSelectedFruit.pic = pic;
                 this.currentSelectedFruit.name = name;
                 this.currentSelectedFruit.price = price;
-                if (this.isSteady) {
-                    this.calculatePrice();
-                }
+                // if (this.isSteady) {
+                //     this.calculatePrice();
+                // }
+                this.calculatePrice();
             }
         },
         /**
@@ -440,13 +441,12 @@ new Vue({
         /**
          *提交订单
          */
-        submitOrder: async function (flag) {
+        submitOrder: async function () {
             var vm = this;
             await axios.post('rpcShop/getOrderCode').then(function (res) {
                 return res;
             }).then(function (res) {
                 var orderNo = res.data.responseObject.data;
-                var orderAmount = vm.storeListDetail.totalMoney;
                 if (res.data.successFlag == 0) {
                     axios.post('rpcShop/makeUnderShopOrder', vm.stringifyParams({
                         shopCode: vm.shopInfo.shopCode,
@@ -473,7 +473,7 @@ new Vue({
                             vm.storeListDetail = {};
                             vm.currentOrderDialog = -1;
                             localStorage.setItem('storeList', JSON.stringify(vm.storeList));
-                            vm.getPayQrCode(orderNo,orderAmount,flag);
+                            vm.getPayQrCode(orderNo);
                         } else {
                             vm.toast(false, '提交订单失败');
                         }
@@ -853,6 +853,7 @@ new Vue({
     },
     filters: {
         filterTime: function (timestamp) {
+            console.log(timestamp);
             var date = new Date(timestamp);
             var year = date.getFullYear();
             var month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button class="test" onclick="getAudioByChara()">发送文字</button>
+    <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+    <script>
+        // x2dRKYT1nMocPcPI3CGyEtxo MivG6Qh2rQI2MvepbqHgXyzltxGgALFd
+
+        var accessToken = '24.9d9167d9c4474454c1009197ee05a3d3.2592000.1566033758.282335-16837413';
+
+        function getToken() {
+            $.post('https://openapi.baidu.com/oauth/2.0/token', {
+                grant_type: 'client_credentials',
+                client_id: 'x2dRKYT1nMocPcPI3CGyEtxo',
+                client_secret: 'MivG6Qh2rQI2MvepbqHgXyzltxGgALFd'
+            }, function (data) {
+                console.log(data);
+            });
+        }
+
+        function getAudioByChara() {
+            var text = '到账5.2元';
+            text = encodeURI(encodeURI(text));
+            $.get('https://tsn.baidu.com/text2audio?lan=zh&ctp=1&cuid=2C-4D-54-59-59-20&tok=' + accessToken + '&tex=' +
+                text,
+                function (data) {
+                    var audio = document.createElement('audio');
+                    var src = URL.createObjectURL(data);
+                    console.log(src);
+                    audio.src = src;
+                    audio.controls = 'controls';
+                    document.body.appendChild(audio);
+                    console.log(src);
+                },'blob');
+        }
+    </script>
+</body>
+
+</html>

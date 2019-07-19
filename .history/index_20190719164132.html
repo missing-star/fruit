@@ -120,7 +120,7 @@
                                 <img src="./images/goods.png" class="order-goods-pic">
                                 <div class="order-detail">
                                     <p class="order-number">单号：{{item.orderCode}}</p>
-                                    <p class="order-date">{{item.createTime | filterTime}}</p>
+                                    <p class="order-date">{{item.createTime}}</p>
                                 </div>
                                 <button class="post-way self">{{item.giveWay == 0 ? '商家配送' : '第三方配送'}}</button>
                             </li>
@@ -135,7 +135,7 @@
                                 <img src="./images/goods.png" class="order-goods-pic">
                                 <div class="order-detail">
                                     <p class="order-number">单号：{{item.orderCode}}</p>
-                                    <p class="order-date">{{item.createTime | filterTime}}</p>
+                                    <p class="order-date">{{item.createTime}}</p>
                                 </div>
                                 <button class="post-way self">{{item.giveWay == 0 ? '商家配送' : '第三方配送'}}</button>
                             </li>
@@ -191,7 +191,7 @@
                         <p class="calculator-title">合计</p>
                         <span class="goods-price">
                             <i class="money-icon blue">￥</i>
-                            <i class="money-number blue">{{orderDetailOnline.orderRealAmount}}</i>
+                            <i class="money-number blue">{{orderDetailOnline.orderAmount}}</i>
                         </span>
                         <button class="print-action pointer" @click="printTick">打印小票</button>
                     </div>
@@ -219,7 +219,7 @@
                                 <img src="./images/goods.png" class="order-goods-pic">
                                 <div class="order-detail">
                                     <p class="order-number">单号：{{item.orderCode}}</p>
-                                    <p class="order-date">{{item.createTime | filterTime}}</p>
+                                    <p class="order-date">{{item.createTime}}</p>
                                 </div>
                                 <button
                                     class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
@@ -235,7 +235,7 @@
                                 <img src="./images/goods.png" class="order-goods-pic">
                                 <div class="order-detail">
                                     <p class="order-number">单号：{{item.orderCode}}</p>
-                                    <p class="order-date">{{item.createTime | filterTime}}</p>
+                                    <p class="order-date">{{item.createTime}}</p>
                                 </div>
                                 <button
                                     class="post-way self">{{item.transWay == 2 ? '自取' : (orderDetailOffline.transWay == 1 ? (orderDetailOffline.giveWay == 0 ? '商家配送' :'第三方配送') : '线下交易')}}</button>
@@ -273,9 +273,9 @@
                         <span class="goods-price">
                             <i class="money-icon blue">￥</i>
                             <i
-                                class="money-number blue">{{orderDetailOffline.orderRealAmount == null ? '0.00' : orderDetailOffline.orderRealAmount}}</i>
+                                class="money-number blue">{{orderDetailOffline.orderAmount == null ? '0.00' : orderDetailOffline.orderAmount}}</i>
                         </span>
-                        <button @click="getPayQrCode(orderDetailOffline.orderCode,orderDetailOffline.orderRealAmount)"
+                        <button @click="getPayQrCode(orderDetailOffline.orderCode,orderDetailOffline.orderAmount)"
                             class="print-action pointer">查看付款码</button>
                     </div>
                 </div>
@@ -353,7 +353,7 @@
                                 <p class="order-info deal-pay">处理方式：线下订单</p>
                             </div>
                         </div>
-                        <button @click="submitOrder(true)" class="go-cash pointer">结算</button>
+                        <button @click="getPayQrCode(storeListDetail.orderNum,storeListDetail.totalMoney,true)" class="go-cash pointer">结算</button>
                     </div>
                     <div class="order-list-right calculator">
                         <ul class="order-detail-goods-list-wrapper dialog">
